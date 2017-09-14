@@ -15,12 +15,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//后台首页
-Route::get('/Admin' , 'Admin\AdminController@index');
-//后台文章模块
+
+//后台
 Route::Group(['namespace' => 'Admin' , 'prefix' => 'Admin'],function(){
+    //后台首页
+    Route::get('/' , 'AdminController@index');
+
+    //文章
     Route::Group(['prefix' => 'Article'],function(){
         //显示文章列表
         Route::get('index' , 'ArticleController@index');
+        Route::get('write' , 'ArticleController@write');
+    });
+    //标签
+    Route::Group(['prefix' => 'Tags'],function(){
+        //显示文章列表
+        Route::get('index' , 'TagsController@index');
+        Route::get('write' , 'ArticleController@write');
     });
 });

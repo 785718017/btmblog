@@ -1,6 +1,16 @@
+<?php $__env->startSection('style'); ?>
+    <script>
+
+    </script>
+    <?php $__env->stopSection(); ?>
 <?php $__env->startSection('common_content'); ?>
     <div>
-        123
+        
+        <div>
+            <div>写文章</div>
+            <div>标签管理</div>
+
+        </div>
     </div>
     <?php $__env->stopSection(); ?>
 

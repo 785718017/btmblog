@@ -16,6 +16,11 @@
         <?php $__env->startSection('style'); ?>
 
             <?php echo $__env->yieldSection(); ?>
+        <script type="text/javascript" src="<?php echo e(asset('/js/jquery-1.8.3.min.js')); ?>"></script>
+        <script type="text/javascript" src="<?php echo e(asset('/js/common.js')); ?>"></script>
+        <?php $__env->startSection('script_src'); ?>
+
+            <?php echo $__env->yieldSection(); ?>
     </head>
     <body>
         
@@ -30,10 +35,15 @@
             </div>
             
             <div class='common_content'>
-                <?php $__env->startSection('common_content'); ?>
-                    
-                <?php echo $__env->yieldSection(); ?>
+                <div class='common_show_content'>
+                    <?php $__env->startSection('common_content'); ?>
+                        
+                    <?php echo $__env->yieldSection(); ?>
+                </div>
             </div>
         </div>
     </body>
+    <?php $__env->startSection('script'); ?>
+
+        <?php echo $__env->yieldSection(); ?>
 </html>

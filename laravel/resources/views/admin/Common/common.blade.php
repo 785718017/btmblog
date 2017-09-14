@@ -16,6 +16,11 @@
         @section('style')
 
             @show
+        <script type="text/javascript" src="{{asset('/js/jquery-1.8.3.min.js')}}"></script>
+        <script type="text/javascript" src="{{asset('/js/common.js')}}"></script>
+        @section('script_src')
+
+            @show
     </head>
     <body>
         {{--公共顶部--}}
@@ -30,10 +35,15 @@
             </div>
             {{--内容区域--}}
             <div class='common_content'>
-                @section('common_content')
-                    
-                @show
+                <div class='common_show_content'>
+                    @section('common_content')
+                        
+                    @show
+                </div>
             </div>
         </div>
     </body>
+    @section('script')
+
+        @show
 </html>

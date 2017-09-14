@@ -25,6 +25,10 @@
 .user_name{
     margin-right:30px;
 }
+.slogan{
+    font-size: 12px;
+    margin-left: 20px;
+}
 /*公共顶部样式结束*/
 /*侧边栏样式开始*/
 .common_body{
@@ -33,39 +37,30 @@
     overflow: hidden;
 }
 .common_sidebar{
-    width:15%;
-    min-width: 150px;
+    width:200px;
     height: 100%;
-    float: left;
-}
-.common_sidebar_ul{
-    width: 200px;
-    min-height: 600px;
     background-color:rgba(238,238,238,0.98);
+    position: absolute;
 }
 .common_sidebar_ul li{
     height: 40px;
     line-height: 40px;
     list-style: none;
     color:#333;  
-    border:solid #e5e5e5 1px;
+    border-bottom:solid #e5e5e5 1px;
     padding-left:20px;
     font-size:14px;
 }
 /*侧边栏样式结束*/
 /*主要内容区域开始*/
 .common_content{
-    width: 85%;
-    min-width: 1000px;
-    float: left;    
+    margin-left: 100px;
+    width: 100%;
+    height: 100%;    
+}
+.common_show_content{
+    width: 1300px;
+    margin: 0px auto;
+    border:solid 1px #fff;
 }
 /*主要内容区域结束*/
-
-
-
-
-
-
-
-
-
