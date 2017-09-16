@@ -16,6 +16,9 @@
         <?php $__env->startSection('style'); ?>
 
             <?php echo $__env->yieldSection(); ?>
+        <?php $__env->startSection('style_src'); ?>
+
+            <?php echo $__env->yieldSection(); ?>
         <script type="text/javascript" src="<?php echo e(asset('/js/jquery-1.8.3.min.js')); ?>"></script>
         <script type="text/javascript" src="<?php echo e(asset('/js/common.js')); ?>"></script>
         <?php $__env->startSection('script_src'); ?>
