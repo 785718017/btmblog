@@ -16,6 +16,9 @@
         @section('style')
 
             @show
+        @section('style_src')
+
+            @show
         <script type="text/javascript" src="{{asset('/js/jquery-1.8.3.min.js')}}"></script>
         <script type="text/javascript" src="{{asset('/js/common.js')}}"></script>
         @section('script_src')

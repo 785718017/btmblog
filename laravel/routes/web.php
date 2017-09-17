@@ -34,3 +34,9 @@ Route::Group(['namespace' => 'Admin' , 'prefix' => 'Admin'],function(){
         Route::get('write' , 'ArticleController@write');
     });
 });
+
+//前台
+Route::Group(['namespace' => 'Home'],function(){
+    //后台首页
+    Route::get('/' , 'IndexController@index');
+});

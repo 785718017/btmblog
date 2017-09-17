@@ -1,6 +1,9 @@
 .dib{
     display: inline-block;
 }
+.hide{
+    display: none;
+}
 /*公共顶部样式开始*/
 .top{
     background-color: #333;
