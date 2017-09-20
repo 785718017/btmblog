@@ -105,6 +105,23 @@
             font-size: 14px;
         }
         /*添加标签弹出层样式结束*/
+        .tags_table{
+            width: 1200px;
+            border-collapse: collapse;  
+            margin:10px auto;                              
+        }
+        .tags_table td{
+            border:solid #ccc 1px;
+        }
+
+        .first_level_tags{
+            width: 150px;
+            text-align: center;
+        }
+        .second_level_tags{
+            width: 200px;
+            text-align: center;
+        }
 	</style>
     @stop
 @section('style_src')
@@ -112,6 +129,7 @@
     @stop
 @section('script_src')
     <script type="text/javascript" src="{{asset('/plugin/layer-v3.1.0/layer/layer.js')}}"></script>
+    <script type="text/javascript" src="{{asset('/plugin/handlebars-v3.0.3.min.js')}}"></script>
     @stop
 @section('common_content')
     {{--添加标签部分--}}
@@ -119,7 +137,7 @@
         <div class='add_tags_btn'>添加标签</div>
     </div>
     {{--标签列表--}}
-    <div class=''>
+    <div class='tags_show'>
 
     </div>
     {{--添加标签的弹出层--}}
@@ -163,8 +181,69 @@
     </div>   
     @stop
 @section('script')
+        @verbatim
+            <script id="show_tags" type="text/x-handlebars-template">
+                <table class='tags_table'>
+                    {{#each this}}
+                        {{#eq child_num 0}}                       
+                            <tr>
+                                <td class='first_level_tags'>{{name}}</td>
+                                <td class='second_level_tags'></td>
+                                <td class='third_level_tags'>
+                                   
+                                </td>
+                            </tr>
+                        {{else}}
+                            {{#each child}}
+                                {{#eq @index 0}}                
+                                <tr>
+                                    <td class='first_level_tags'  rowspan="{{../../child_num}}">{{../../name}}</td>
+                                    <td class='second_level_tags'>{{name}}</td>
+                                    <td class='third_level_tags'>
+                                        {{#each child}}
+                                            <div>{{name}}</div>
+                                        {{/each}}
+                                    </td>
+                                </tr>
+                                {{else}}
+                                <tr>
+                                    <td class='second_level_tags'>{{name}}</td>
+                                    <td class='third_level_tags'>
+                                        {{#each child}}
+                                            <div>{{name}}</div>
+                                        {{/each}}
+                                    </td>
+                                </tr>
+                                {{/eq}}
+                            {{/each}}
+                        {{/eq}}
+                    {{/each}}
+                </table>
+            </script>
+        @endverbatim
         <script type='text/javascript'>
+            //注册handlebars标签
+            Handlebars.registerHelper("eq",function(value1,value2,options){
+                if(value1 == value2){
+                    return options.fn(this);
+                }else{
+                    return options.inverse(this);
+                }           
+            }); 
+            //进入页面时获取所有标签
             $(function(){
+                $.post('/Admin/Tags/getTags', null, function(data){
+                    if(data.status){
+                        $('.tags_show').html($('#show_tags').template(data.info));
+                        // var html = template(data.info);
+                        // var source = $("#tags").html();
+                        // var template = Handlebars.compile(source);
+                    }else{
+                        alert('err');
+                    }
+                    
+                })
+
                 $('body').onEvent({
                     'click' : {
                         //添加标签

@@ -6,15 +6,28 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     /**
+     * 储存请求对象
+     */
+    protected $Request = null;
+    /**
      * 事务的开启状态
      */
     protected $trans_status = false;
+    /**
+     * 初始化时调用的服务
+     */
+    public function  __construct(Request $Request){
+        $this->$Request = $Request;
+    }
+
     /**
      * 开启事务
      */
@@ -30,12 +43,12 @@ class Controller extends BaseController
      */
     public function success($info){
         $data['info'] = $info;
-        $data['status'] = 1;
+        $data['status'] = (int)1;
         if($this->trans_status){
             DB::commit();
             $this->trans_status = false;
         }
-        return ajaxReturn($data);
+        return $data;
     }
 
     /**
@@ -45,11 +58,11 @@ class Controller extends BaseController
      */
     public function error($info){
         $data['info'] = $info;
-        $data['status'] = 0;
+        $data['status'] = (int)0;
         if($this->trans_status){
             DB::rollback();
             $this->trans_status = false;
         }
-        return ajaxReturn($info);
+        return $data;
     }
 }

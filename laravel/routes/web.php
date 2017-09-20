@@ -14,7 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::post('Admin/Tags/getTags' , 'Admin\TagsController@getTags');
 
 //后台
 Route::Group(['namespace' => 'Admin' , 'prefix' => 'Admin'],function(){
@@ -29,9 +29,11 @@ Route::Group(['namespace' => 'Admin' , 'prefix' => 'Admin'],function(){
     });
     //标签
     Route::Group(['prefix' => 'Tags'],function(){
-        //显示文章列表
+        //显示页面
         Route::get('index' , 'TagsController@index');
         Route::get('write' , 'ArticleController@write');
+        //获取所有标签
+
     });
 });
 
