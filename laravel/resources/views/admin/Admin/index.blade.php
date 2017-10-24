@@ -53,7 +53,7 @@
             background-size: 150px 150px;   
             color:#fff;               
         }
-        .tag{    
+        .tag_sp{    
             width: 150px;
             height: 150px;          
             background: url("{{asset('image/admin/index_tag.png')}}");
@@ -74,7 +74,7 @@
             <span class='dib message'>留言</span>
         </div>
         <div class='index_btn dib tag_div'>
-            <a href="/Admin/Tags/index"><span class='dib tag'>标签</span></a>
+            <a href="/Admin/Tags/index"><span class='dib tag_sp'>标签</span></a>
         </div>
     </div>
     @stop

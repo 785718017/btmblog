@@ -22,6 +22,31 @@ class Constants{
      * int 3
      */
     const TAG_LEVEL_THREE = 3;
+    /**
+     * 顶级标签的父级id
+     * int 0
+     */
+    const TOP_LEVEL_TAG_FATHER_ID = 0;
+    /**
+     * 标签状态--可用
+     * int 1
+     */
+    const TAG_STATUS_USE = 1;
+    /**
+     * 标签状态--不可用
+     * int 0
+     */
+    const TAG_STATUS_NO_USE = 0;
+    /**
+     * 文章状态--在线
+     * int 1
+     */
+    const ARTICLE_ONLINE = 1;
+    /**
+     * 文章状态--已下线
+     * int 0
+     */
+    const ARTICLE_OFFLINE = 0;
 }
 
 

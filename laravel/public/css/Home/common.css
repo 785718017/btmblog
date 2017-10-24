@@ -1,0 +1,57 @@
+/*使用自定义字体*/
+/* @font-face {
+    font-family: writelogo;
+    src: url('write.ttf');
+}
+*/
+/*页面样式*/
+body{
+	margin:0px;
+	padding: 0px;
+}
+.dib{
+	display: inline-block;
+}
+.hide{
+	display: none;
+}
+/*公共导航栏样式开始*/
+.common_nav{
+	width: 1030px;
+	overflow: hidden;
+	margin: 0px auto;
+}
+.home_img{
+	width: 260px;
+	height: 80px;
+	line-height: 80px;
+	background: url("../../image/home/logo.png");
+	background-size: 100% 100%;
+	float: left;
+}
+.common_nav_box{
+	height: 80px;
+	float: right;
+	overflow: hidden;
+}
+.common_nav_box a{		
+	text-decoration: none;
+	display: inline-block;
+	height: 80px;
+	float: left;
+}
+.common_nav_list{
+	font-size: 18px;
+	color: #333;
+	height: 30px;
+	line-height: 30px;
+	margin-top:25px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.small_nav{
+	text-align: center;
+	font-size: 12px;
+	color: #999;	
+}
+/*公共导航栏样式结束*/

@@ -1,10 +1,10 @@
-@extends('admin.Common.common')
+@extends('home.Common.common')
 @section('style')
     <style>
 		.home_banner{ 
             width: 100%;
             height: 265px;
-            background: url('../image/blog_banner.png');
+            background: url("{{asset('/image/home/blog_banner.png')}}");
             background-size: 100% 100%;
         }
         .home_banner .head_img_out_div{
@@ -15,7 +15,7 @@
             width: 140px;
             height: 140px;
             border-radius: 100%;
-            background: url('../image/headimg.jpg');
+            background: url("{{asset('/image/home/headimg.jpg')}}");
             background-size: 100% 100%;
             position: relative;
             left: 700px;
@@ -127,7 +127,7 @@
         .vision_img{
             width: 21px;
             height: 21px;
-            background:url('../image/icons.png');
+            background:url("{{asset('/image/home/icons.png')}}");
             background-size:63px 63px;
             background-repeat: no-repeat;
             background-position: 0px -21px;
@@ -151,7 +151,7 @@
         .agree_img{
             width: 21px;
             height: 21px;
-            background:url('../image/icons.png');
+            background:url("{{asset('/image/home/icons.png')}}");
             background-size:63px 63px;
             background-repeat: no-repeat;
             background-position: -21px -21px;
@@ -177,7 +177,7 @@
         .disagree_img{
             width: 21px;
             height: 21px;
-            background:url('../image/icons.png');
+            background:url("{{asset('/image/home/icons.png')}}");
             background-size:63px 63px;
             background-repeat: no-repeat;
             background-position: -42px -21px;
@@ -209,7 +209,7 @@
         .article_tag_img{
             width: 21px;
             height: 21px;
-            background:url('../image/icons.png');
+            background:url("{{asset('/image/home/icons.png')}}");
             background-size:63px 63px;
             background-repeat: no-repeat;
             background-position: -42px 0px;
@@ -235,7 +235,7 @@
         .author_img{
             width: 21px;
             height: 21px;
-            background:url('../image/icons.png');
+            background:url("{{asset('/image/home/icons.png')}}");
             background-size:63px 63px;
             background-repeat: no-repeat;
             background-position: -21px 0px;
@@ -260,7 +260,7 @@
         .time_img{
             width: 21px;
             height: 21px;
-            background:url('../image/icons.png');
+            background:url("{{asset('/image/home/icons.png')}}");
             background-size:63px 63px;
             background-repeat: no-repeat;
             background-position: 0px 0px;
@@ -285,7 +285,7 @@
         .comment_img{
             width: 25px;
             height: 25px;
-            background:url('../image/icons.png');
+            background:url("{{asset('/image/home/icons.png')}}");
             background-size:75px 75px;
             background-repeat: no-repeat;
             background-position: 0px -50px;
@@ -311,7 +311,7 @@
             padding-left: 30px;
             margin-left:27px;
             margin-top: 20px;
-            background: url('../image/search_btn.png');
+            background: url("{{asset('/image/home/search_btn.png')}}");
             background-size:20px 20px;
             background-repeat: no-repeat;
             background-position: 5px 5px;
@@ -335,7 +335,7 @@
             margin:0px;
             padding: 0px;
             margin-left: 15px;          
-            background: url('../image/rank.jpg');
+            background: url("{{asset('/image/home/rank.jpg')}}");
             background-size: 19px 270px;
             background-repeat: no-repeat;
             background-position:8px 8px; 
@@ -374,7 +374,122 @@
     <script type="text/javascript" src="{{asset('/plugin/handlebars-v3.0.3.min.js')}}"></script>
     @stop
 @section('common_content')
-       
+    <!-- 首页banner -->
+    <div class='home_banner'>
+        <div class='head_img_out_div'>
+            <div class='head_img'>
+                <!-- 显示名字的部分 -->
+                <div class='myname'>
+                    半透明
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 首页主题内容区域 -->
+    <div class='background'>
+        <div class='home_main_content'>
+            <!-- 文章推荐 -->
+            <div class='article_recommend dib'>
+                <div class='article_recommend_title'>文章<span class='article_recommend_title_span'>推荐</span></div>
+                <!-- 单个文章 -->
+                <div class='article_div'>
+                    <div class='article_info'>
+                        <!-- 标题 -->
+                        <div class='article_title'>
+                            <span class='dib'><a href="" class='article_title_a'>写给thinkphp开发者的laravel系列教程(一)序言</a></span>
+                            <!-- 点踩 -->
+                            <span class='dib disagree_span' title='踩'><span class='dib disagree_img'></span><span class='disagree_num'>12134</span></span>
+                            <!-- 点赞 -->
+                            <span class='dib agree_span' title='赞'><span class='dib agree_img'></span><span class='agree_num'>12134</span></span>
+                            <!-- 浏览量 -->
+                            <span class='dib vision_span' title='浏览量'><span class='dib vision_img'></span><span class='vision_num'>12134</span></span>
+                        </div>
+                        <!-- 内容 -->
+                        <div class='article_logo_content'>
+                            <!-- 文章标志图 -->
+                            <div class='dib article_logo_div'><img src="{{asset('/image/home/article_logo.jpg')}}" class='article_logo'></div>
+                            <!-- 内容简要 -->
+                            <div class='dib article_content_big_div'>
+                                <div class='dib article_content'>
+                                    <a href="">终于；终于；终于； 开始正式写 laravel 系列了； 本系列教程主要面向的是多少懂点 thinkphp3.X 的开发者们； 我把我从tp3转到laravel的历程转成一篇篇的文章教程； 愿这一系列的文章； 能成为童鞋们踏入laravel的引路人； 如果还没下定决定要使用laravel； 那么我上来就是一个连接； 不是别人说好我也跟着说好的； 而是我实实在在的使用过后；... </a>
+                                </div>
+                                <!-- 文章信息和操作区域 -点赞-点踩-评论 -->
+                                <div class='dib tag_author_time_comment'>
+                                    <!-- 文章信息 -->
+                                    <div class='article_tag_div' title='标签'>
+                                        <!-- 标签 -->
+                                        <span class='dib article_tag'>
+                                            <span class='dib article_tag_img'></span>
+                                            <ul>
+                                                <a href=""><li class='article_tag_name_li'>电影</li></a>
+                                                <a href=""><li class='article_tag_name_li'>Laravel</li></a>
+                                                <a href=""><li class='article_tag_name_li'>JavaScript</li></a>
+                                            </ul>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <!-- 作者 -->
+                                        <span class='author_span dib' title='作者'> 
+                                            <span class='dib author_img'></span><span class='author_name'>半透明</span>
+                                        </span>
+                                        <!-- 时间 -->
+                                        <span class='time_span dib' title='发布时间'>
+                                            <span class='dib time_img'></span><span class='article_time'>2017-9-7 23:06:06</span>
+                                        </span>                                                                     
+                                        <!-- 评论-跳转到文章的评论页面 -->
+                                        <span class='comment_span dib' title='评论'>
+                                            <span class='dib comment_img'></span><span class='comment_num'>356</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <!-- 右侧边栏 -->
+            <div class='right_nav dib'>
+                <!-- 站内搜索 -->
+                <div>
+                    <input type="text" class='search_box'/>
+                </div>
+                <!-- 热门标签 -->
+                <div class='hot_tags_div'>
+                    <div class='hot_tags_title'>
+                        热门标签:
+                    </div>
+                    <ul>
+                        <a href=""><li class='article_tag_name_li'>电影</li></a>
+                        <a href=""><li class='article_tag_name_li'>Laravel</li></a>
+                        <a href=""><li class='article_tag_name_li'>JavaScript</li></a>
+                        <a href=""><li class='article_tag_name_li'>电影</li></a>
+                        <a href=""><li class='article_tag_name_li'>Laravel</li></a>
+                        <a href=""><li class='article_tag_name_li'>JavaScript</li></a>
+                    </ul>
+                </div>
+                <!-- 扫码关注 -->
+                <div></div>
+                <!-- 文章排行 -->
+                <div>
+                    <div class='article_rank_title'>文章排行：</div>
+                    <ul class='rank_ul'>
+                        <a href="" title='【活动作品】柠檬绿兔小白个人博客模板'><li class='rank_li'>【活动作品】柠檬绿兔小白个人博客模板</li></a>
+                        <a href="" title='【活动作品】柠檬绿兔小白个人博客模板'><li class='rank_li'>【活动作品】柠檬绿兔小白个人博客模板</li></a>
+                        <a href="" title='【活动作品】柠檬绿兔小白个人博客模板'><li class='rank_li'>【活动作品】柠檬绿兔小白个人博客模板</li></a>
+                        <a href="" title='【活动作品】柠檬绿兔小白个人博客模板'><li class='rank_li'>【活动作品】柠檬绿兔小白个人博客模板</li></a>
+                        <a href="" title='【活动作品】柠檬绿兔小白个人博客模板'><li class='rank_li'>【活动作品】柠檬绿兔小白个人博客模板</li></a>
+                        <a href="" title='【活动作品】柠檬绿兔小白个人博客模板'><li class='rank_li'>【活动作品】柠檬绿兔小白个人博客模板</li></a>
+                        <a href="" title='【活动作品】柠檬绿兔小白个人博客模板'><li class='rank_li'>【活动作品】柠檬绿兔小白个人博客模板</li></a>
+                        <a href="" title='【活动作品】柠檬绿兔小白个人博客模板'><li class='rank_li'>【活动作品】柠檬绿兔小白个人博客模板</li></a>
+                        <a href="" title='【活动作品】柠檬绿兔小白个人博客模板'><li class='rank_li'>【活动作品】柠檬绿兔小白个人博客模板</li></a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- 公共底部-显示网站的基本信息 -->
+        <div></div>
+    </div>
     @stop
 @section('script')
         @verbatim

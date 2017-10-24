@@ -21,6 +21,24 @@ $.fn.extend(
 		}
 	}
 )
+/**
+ * 解析url的参数
+ */
+function getParams(url){
+	var params = new Object();
+	if(!url){
+		url = window.location.href;
+	}
+
+	var url_arr = url.split('?');
+	var param_string = url_arr[1];
+	var param_arr = param_string.split('&');
+	for(i in param_arr){
+		var param = param_arr[i].split('=');
+		params[param[0]] = param[1];
+	}
+	return params;
+}	
 
 $(function(){
 	/**
@@ -40,4 +58,5 @@ $(function(){
 			}
 		}
 	})
+
 })

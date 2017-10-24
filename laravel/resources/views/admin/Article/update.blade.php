@@ -125,15 +125,15 @@
     @stop
 
 @section('common_content')
-    <table class='article_info_table'>
+    <table class='article_info_table'  article_id='{{$id}}'>
         <tr>
             <td class='title_td'>文章标题</td>
             <td>
-                <input type="text" class='name' />
+                <input type="text" class='name'/>
             </td>
             <td class='title_td'>作者</td>
             <td>
-                <input type="text" class='author' />
+                <input type="text" class='author'/>
             </td>
         </tr>                                      
         <tr>
@@ -203,6 +203,14 @@
             <option value='{{id}}' tag_name='{{name}}' tag_color='{{color}}'>{{name}}</option>
             {{/each}}
         </script>
+        <script id="selected_tags" type="text/x-handlebars-template">
+            {{#each this}}
+                <li>
+                    <div class='selected_tag tag color_{{color}}' tag_id='{{id}}'>{{name}}</div>
+                    <div class='delete_tag'></div>
+                </li>
+            {{/each}}
+        </script>
     @endverbatim
     <script type="text/javascript">
         //实例化编辑器
@@ -223,6 +231,39 @@
                 layer.msg('获取顶级标签失败，请刷新页面');
             }
         })
+
+        var id = $('.article_info_table').attr('article_id');
+        //获取文章信息
+        $.post('/Admin/Article/getArticleInfo',{id : id},function(data){
+            if(data.status){
+                //展示数据
+                $('.name').val(data.info.name);
+                $('.author').val(data.info.author);
+                $('.logo').attr('logo_id',data.info.logo);
+                $('.introduct').html(data.info.introduce);
+                
+                //正文
+                ue.ready(function() {
+                    ue.execCommand('inserthtml', data.info.content)
+                });
+                //设置logo图
+                $('#input_file_btn').css('width','100%');
+                $('#input_file_btn').css('height','100%');
+                $('#input_file_btn').css('marginLeft','20px');
+                $('#input_file_btn').css('marginTop','1p5x');
+                $('#input_file_btn').css('background','url('+data.info.logo.url+')');
+                $('#input_file_btn').css('backgroundSize','180px 120px');
+                $('#input_file_btn').css('backgroundRepeat','no-repeat');               
+                $('#input_file').attr('logo_id',data.info.logo.logo_id);
+                //设置标签
+                $('.show_tags ul').html($('#selected_tags').template(data.info.tags));
+
+
+            }else{
+                layer.msg('获取数据失败');
+            }
+        })
+
         $(function(){
             $('body').onEvent({
                 'change' : {
@@ -361,6 +402,9 @@
                         $(this).closest('li').remove();
                     },
                     '.submit' : function(){
+                        //获取文章的id
+                        var id = $('.article_info_table').attr('article_id');
+
                         //先获取填写的内容
                         var name = $('.name').val();    //标题
                         var author = $('.author').val();  //作者
@@ -401,6 +445,7 @@
                             return false;
                         }
                         var data = {
+                            id : id,
                             name : name,
                             author : author,
                             content : content,
@@ -410,7 +455,7 @@
                             
                         };
                         //保存文章
-                        $.post('/Admin/Article/addArticle', data, function(data){
+                        $.post('/Admin/Article/updateArticle', data, function(data){
                             //添加成功后，跳转到文章列表页面，否则留在本页面
                             if(data.status){
                                 window.location.href = '/Admin/Article/index';

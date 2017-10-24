@@ -3,7 +3,8 @@
     <head>
         <title>半透明的博客-{{$page_title}}</title>
         <meta charset="utf-8">
-        <link rel="stylesheet" type="text/css" href="{{asset('/css/Admin/Common.css')}}">
+        <link rel="icon" type="image/x-icon" href="{{asset('/image/little_icon.png')}}" />
+        <link rel="stylesheet" type="text/css" href="{{asset('/css/Admin/Common.css')}}" />
         <style type="text/css">
             *{               
                 margin: 0px;
@@ -20,7 +21,9 @@
 
             @show
         <script type="text/javascript" src="{{asset('/js/jquery-1.8.3.min.js')}}"></script>
-        <script type="text/javascript" src="{{asset('/js/common.js')}}"></script>
+        <script type="text/javascript" src="{{asset('/js/common.js?ver=201710240930')}}"></script>
+        <script type="text/javascript" src="{{asset('/plugin/layer-v3.1.0/layer/layer.js')}}"></script>
+        <script type="text/javascript" src="{{asset('/plugin/handlebars-v3.0.3.min.js')}}"></script>
         @section('script_src')
 
             @show

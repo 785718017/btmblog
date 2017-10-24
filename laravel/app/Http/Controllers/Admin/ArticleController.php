@@ -1,7 +1,10 @@
 <?php
     namespace App\Http\Controllers\Admin;
+    use App\Constants;
     use App\Http\Controllers\Controller;
-
+    use App\Service\ArticleService;
+    use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Storage;
     class ArticleController extends Controller{
         /**
          * 显示文章列表
@@ -17,5 +20,117 @@
          */
         public function write(){
             return view('admin.Article.write',['page_title'=>'写文章']);
+        }
+
+        /**
+         * 上传logo
+         */
+        public function uploadLogo(Request $request, ArticleService $articleService){
+            $logo = $request->file('file')->store('article_logo');
+            //将文件信息存入数据库
+            $this->startTrans();
+            $logo_id = $articleService->addArticleLogo($logo);
+            //返回文件路径
+            if(!$logo_id){
+                return $this->error('存入logo数据失败');
+            }
+            $data = array();
+            $data['logo_id'] = $logo_id;
+            $data['url'] = asset('storage/'.$logo);
+            return $this->success($data);
+        }
+
+        /**
+         * 写文章
+         */
+        public function addArticle(Request $request, ArticleService $articleService){
+
+            $data = $request->all();
+
+            if(empty($data['name']) || empty($data['author']) || empty($data['content']) || empty($data['logo_id']) || empty($data['introduct']) || empty($data['tags'])){
+                return $this->error('缺少参数');
+            }
+            //开启事务
+            $this->startTrans();
+            //将文章的数据入库
+            $aid = $articleService->addArticle($data);
+            if($aid == false){
+                return $this->error('存储文章失败');
+            }
+
+            //储存文章标签数据
+            $tags = array_unique($data['tags']);
+            foreach($tags as $tag){
+                $article_tag = $articleService->addArticleTag($aid, $tag);
+                if(empty($article_tag)){
+                    return $this->error('添加文章标签失败');
+                }
+            }
+            //将对应的logo数据的status改为使用中
+            $logo = $articleService->changeLogoStatus($data['logo_id'], Constants::TAG_STATUS_USE);
+
+            return $this->success('成功');
+            //生成静态化的文件
+
+        }
+        /**
+         * 获取所有的文章列表
+         */
+        public function getAllArticles(ArticleService $articleService){
+            $articles = $articleService->getAllArticles();
+            if(empty($articles)){
+                return $this->error('获取数据失败');
+            }
+            $data = array();
+            $data['data'] = $articles;
+
+            //获取分页
+            $pages = $articles->links();
+            $data['pages'] = (string)$pages;
+
+
+            return $this->success($data);
+        }
+
+        /**
+         * 修改文章页面
+         */
+        public function update(Request $request){
+            $id = $request->input('id');
+            //赋值给模板
+            return view('admin.Article.update',['page_title'=>'修改文章','id'=>$id]);
+        }
+
+        /**
+         * 文章上线和下线
+         */
+        public function onlineOrOffline(Request $request, ArticleService $articleService){
+            $id = $request->input('id');
+            //修改文章的状态
+            $status = $articleService->updateArticleStatus($id);
+            if(empty($status)){
+                return $this->error('操作失败');
+            }
+            return $this->success('操作成功');
+        }
+
+        /**
+         * 获取文章信息
+         */
+        public function getArticleInfo(Request $request, ArticleService $articleService){
+            $id = $request->input('id');
+            //获取文章的数据
+            $article = $articleService->getArticleById($id);
+            if(empty($article)){
+                return $this->error('获取文章失败');
+            }
+            return $this->success($article);
+        }
+
+        /**
+         * 保存文章的修改
+         */
+        public function updateArticle(Request $request, ArticleService $articleService){
+
         }
     }
