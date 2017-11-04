@@ -186,4 +186,23 @@ class TagsService extends CommonService
         }
         return $info;
     }
+
+    /**
+     * 获取热门标签(这里可以做缓存)
+     */
+    public function getHotTags(){
+        $TagsModel = new TagsModel();
+        $tags = $TagsModel->getHotTags();
+        if(empty($tags)){
+            return array();
+        }
+        //获取其中随机的5条标签
+        $hot_tag_keys = array_rand($tags, 5);
+        $hot_tags = array();
+        foreach($hot_tag_keys as $tag_key){
+            $hot_tags[] = $tags[$tag_key];
+        }
+
+        return $hot_tags;
+    }
 }

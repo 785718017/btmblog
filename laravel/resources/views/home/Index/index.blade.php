@@ -79,6 +79,9 @@
         .article_info{
             width: 740px;
             margin:0px auto;
+            padding-top: 10px;
+            padding-bottom: 20px;
+            border-bottom:solid #F1F0EE 2px;
         }
         .article_title{
             font: 18px "微软雅黑", Arial, Helvetica, sans-serif;
@@ -109,9 +112,11 @@
         }
         .article_content{
             width: 494px;
+            height: 100px;
             float: right;
             font-size: 14px;
             color: #413c3c;
+            overflow: hidden;
         }
         .article_content a{
             color:#36353b;
@@ -196,15 +201,9 @@
         .tag_author_time_comment{
             width: 494px;
         }
-        .article_tag_name_li{
-            color: #36353b;
-            list-style: none;
-            padding:3px 5px;
-            float: left;
-            background: #ccc;
-            margin: 5px 5px;
-            border-radius: 3px;
-            font-size: 14px;
+        .article_tag{
+            width: 430px;
+            height: 45px;
         }
         .article_tag_img{
             width: 21px;
@@ -214,15 +213,8 @@
             background-repeat: no-repeat;
             background-position: -42px 0px;
             float: left;
-            margin-top: 22px;
+            margin-top: 14px;
             margin-left: 20px;
-        }
-        .article_tag_div ul{
-            margin: 0px;
-            padding: 0px;
-            float: left;
-            overflow: hidden;
-            margin-top:15px;
         }
         .author_span{
             width: 100px;
@@ -302,6 +294,10 @@
             float: left;
             cursor: pointer;
         }
+        .no_tags{
+            display: inline-block;
+            margin-top: 12px;
+        }
         /*文章模块样式结束*/
 
         /*右侧边栏的样式开始*/
@@ -323,7 +319,7 @@
         .hot_tags_div{          
             margin-top: 20px;
         }
-        .hot_tags_div ul{           
+        .hot_tags_div .hot_tags_content{           
             overflow: hidden;
             margin:0px;
             padding: 0px;
@@ -391,61 +387,9 @@
             <!-- 文章推荐 -->
             <div class='article_recommend dib'>
                 <div class='article_recommend_title'>文章<span class='article_recommend_title_span'>推荐</span></div>
-                <!-- 单个文章 -->
+                <!-- 文章 -->
                 <div class='article_div'>
-                    <div class='article_info'>
-                        <!-- 标题 -->
-                        <div class='article_title'>
-                            <span class='dib'><a href="" class='article_title_a'>写给thinkphp开发者的laravel系列教程(一)序言</a></span>
-                            <!-- 点踩 -->
-                            <span class='dib disagree_span' title='踩'><span class='dib disagree_img'></span><span class='disagree_num'>12134</span></span>
-                            <!-- 点赞 -->
-                            <span class='dib agree_span' title='赞'><span class='dib agree_img'></span><span class='agree_num'>12134</span></span>
-                            <!-- 浏览量 -->
-                            <span class='dib vision_span' title='浏览量'><span class='dib vision_img'></span><span class='vision_num'>12134</span></span>
-                        </div>
-                        <!-- 内容 -->
-                        <div class='article_logo_content'>
-                            <!-- 文章标志图 -->
-                            <div class='dib article_logo_div'><img src="{{asset('/image/home/article_logo.jpg')}}" class='article_logo'></div>
-                            <!-- 内容简要 -->
-                            <div class='dib article_content_big_div'>
-                                <div class='dib article_content'>
-                                    <a href="">终于；终于；终于； 开始正式写 laravel 系列了； 本系列教程主要面向的是多少懂点 thinkphp3.X 的开发者们； 我把我从tp3转到laravel的历程转成一篇篇的文章教程； 愿这一系列的文章； 能成为童鞋们踏入laravel的引路人； 如果还没下定决定要使用laravel； 那么我上来就是一个连接； 不是别人说好我也跟着说好的； 而是我实实在在的使用过后；... </a>
-                                </div>
-                                <!-- 文章信息和操作区域 -点赞-点踩-评论 -->
-                                <div class='dib tag_author_time_comment'>
-                                    <!-- 文章信息 -->
-                                    <div class='article_tag_div' title='标签'>
-                                        <!-- 标签 -->
-                                        <span class='dib article_tag'>
-                                            <span class='dib article_tag_img'></span>
-                                            <ul>
-                                                <a href=""><li class='article_tag_name_li'>电影</li></a>
-                                                <a href=""><li class='article_tag_name_li'>Laravel</li></a>
-                                                <a href=""><li class='article_tag_name_li'>JavaScript</li></a>
-                                            </ul>
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <!-- 作者 -->
-                                        <span class='author_span dib' title='作者'> 
-                                            <span class='dib author_img'></span><span class='author_name'>半透明</span>
-                                        </span>
-                                        <!-- 时间 -->
-                                        <span class='time_span dib' title='发布时间'>
-                                            <span class='dib time_img'></span><span class='article_time'>2017-9-7 23:06:06</span>
-                                        </span>                                                                     
-                                        <!-- 评论-跳转到文章的评论页面 -->
-                                        <span class='comment_span dib' title='评论'>
-                                            <span class='dib comment_img'></span><span class='comment_num'>356</span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
+                    
                 </div>
             </div>
             <!-- 右侧边栏 -->
@@ -459,14 +403,9 @@
                     <div class='hot_tags_title'>
                         热门标签:
                     </div>
-                    <ul>
-                        <a href=""><li class='article_tag_name_li'>电影</li></a>
-                        <a href=""><li class='article_tag_name_li'>Laravel</li></a>
-                        <a href=""><li class='article_tag_name_li'>JavaScript</li></a>
-                        <a href=""><li class='article_tag_name_li'>电影</li></a>
-                        <a href=""><li class='article_tag_name_li'>Laravel</li></a>
-                        <a href=""><li class='article_tag_name_li'>JavaScript</li></a>
-                    </ul>
+                    <div class='hot_tags_content'>
+                        
+                    </div>
                 </div>
                 <!-- 扫码关注 -->
                 <div></div>
@@ -474,15 +413,7 @@
                 <div>
                     <div class='article_rank_title'>文章排行：</div>
                     <ul class='rank_ul'>
-                        <a href="" title='【活动作品】柠檬绿兔小白个人博客模板'><li class='rank_li'>【活动作品】柠檬绿兔小白个人博客模板</li></a>
-                        <a href="" title='【活动作品】柠檬绿兔小白个人博客模板'><li class='rank_li'>【活动作品】柠檬绿兔小白个人博客模板</li></a>
-                        <a href="" title='【活动作品】柠檬绿兔小白个人博客模板'><li class='rank_li'>【活动作品】柠檬绿兔小白个人博客模板</li></a>
-                        <a href="" title='【活动作品】柠檬绿兔小白个人博客模板'><li class='rank_li'>【活动作品】柠檬绿兔小白个人博客模板</li></a>
-                        <a href="" title='【活动作品】柠檬绿兔小白个人博客模板'><li class='rank_li'>【活动作品】柠檬绿兔小白个人博客模板</li></a>
-                        <a href="" title='【活动作品】柠檬绿兔小白个人博客模板'><li class='rank_li'>【活动作品】柠檬绿兔小白个人博客模板</li></a>
-                        <a href="" title='【活动作品】柠檬绿兔小白个人博客模板'><li class='rank_li'>【活动作品】柠檬绿兔小白个人博客模板</li></a>
-                        <a href="" title='【活动作品】柠檬绿兔小白个人博客模板'><li class='rank_li'>【活动作品】柠檬绿兔小白个人博客模板</li></a>
-                        <a href="" title='【活动作品】柠檬绿兔小白个人博客模板'><li class='rank_li'>【活动作品】柠檬绿兔小白个人博客模板</li></a>
+                        
                     </ul>
                 </div>
             </div>
@@ -493,8 +424,75 @@
     @stop
 @section('script')
         @verbatim
-            <script id="show_tags" type="text/x-handlebars-template">
-                
+            <script id="article" type="text/x-handlebars-template">
+            {{#each this}}
+                    <div class='article_info' article_id='{{id}}'>
+                        <!-- 标题 -->
+                        <div class='article_title'>
+                            <span class='dib'><a href="" class='article_title_a'>{{name}}</a></span>
+                            <!-- 点踩 -->
+                            <span class='dib disagree_span' title='踩'><span class='dib disagree_img'></span><span class='disagree_num'>{{disagree_num}}</span></span>
+                            <!-- 点赞 -->
+                            <span class='dib agree_span' title='赞'><span class='dib agree_img'></span><span class='agree_num'>{{agree_num}}</span></span>
+                            <!-- 浏览量 -->
+                            <span class='dib vision_span' title='浏览量'><span class='dib vision_img'></span><span class='vision_num'>{{browse_times}}</span></span>
+                        </div>
+                        <!-- 内容 -->
+                        <div class='article_logo_content'>
+                            <!-- 文章标志图 -->
+                            <div class='dib article_logo_div'><img src="/storage/{{logo.url}}" class='article_logo'></div>
+                            <!-- 内容简要 -->
+                            <div class='dib article_content_big_div'>
+                                <div class='dib article_content'>
+                                    <a href="">{{introduce}}</a>
+                                </div>
+                                <!-- 文章信息和操作区域 -点赞-点踩-评论 -->
+                                <div class='dib tag_author_time_comment'>
+                                    <!-- 文章信息 -->
+                                    <div class='article_tag_div' title='标签'>
+                                        <!-- 标签 -->
+                                        <span class='dib article_tag'>
+                                            <span class='dib article_tag_img'></span>
+                                                {{#if tags}}
+                                                    {{#each tags}}
+                                                    <a href=""><div class='tag color_{{color}} {{#eq status 0}}ban{{/eq}}' data_id='{{id}}'>{{name}}</div></a>
+                                                    {{/each}}                                                   
+                                                {{else}}                   
+                                                    <span class='no_tags'>暂无标签</span>
+                                                {{/if}}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <!-- 作者 -->
+                                        <span class='author_span dib' title='作者'> 
+                                            <span class='dib author_img'></span><span class='author_name'>{{author}}</span>
+                                        </span>
+                                        <!-- 时间 -->
+                                        <span class='time_span dib' title='发布时间'>
+                                            <span class='dib time_img'></span><span class='article_time'>{{publish_time}}</span>
+                                        </span>                                                                     
+                                        <!-- 评论-跳转到文章的评论页面 -->
+                                        <span class='comment_span dib' title='评论'>
+                                            <span class='dib comment_img'></span><span class='comment_num'>356</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                       
+                    </div>
+            {{/each}}
+            </script>
+
+            <script  id="hot_tags" type="text/x-handlebars-template">
+                {{#each this}}
+                <a href=""><div class='tag color_{{color}} {{#eq status 0}}ban{{/eq}}' data_id='{{id}}'>{{name}}</div></a>
+                {{/each}} 
+            </script>
+
+            <script  id="hot_articles" type="text/x-handlebars-template">
+                {{#each this}}
+                <a href="" title='{{name}}'><li class='rank_li'>{{name}}</li></a>
+                {{/each}} 
             </script>
         @endverbatim
         <script type='text/javascript'>
@@ -506,31 +504,49 @@
                     return options.inverse(this);
                 }           
             }); 
-            //进入页面时获取所有标签
             $(function(){
-                
+                //获取推荐文章(最新的五篇文章)
+                $.post('/Article/getRecommend', null, function(data){
+                    if(data.status){
+                        $('.article_div').html($('#article').template(data.info));
+                    }else{
+                        layer.alert('获取文章失败，请刷新页面重试！', {icon : 6});
+                    }
+                })
+                //获取热门标签
+                $.post('/Tags/getHotTags', null, function(data){
+                    if(data.status){
+                        $('.hot_tags_content').html($('#hot_tags').template(data.info));
+                    }else{
+                        layer.alert('获取热门标签，请刷新页面重试！', {icon : 6});
+                    }
+                })
+
+                //获取阅读量最多的9篇文章
+                $.post('/Article/getHotNineArticles', null, function(data){
+                    if(data.status){
+                        $('.rank_ul').html($('#hot_articles').template(data.info));
+                    }else{
+                        layer.alert('获取文章排行失败，请刷新页面重试！', {icon : 6});
+                    }
+                })
+
 
                 $('body').onEvent({
                     'click' : {
-                        //添加标签
-                        '.add_tags_btn' : function(){
-                            //弹出窗口
-                            layer.open({
-                                type: 1,
-                                title: '添加标签',
-                                maxmin: false, //弹出层是否可缩放
-                                shadeClose: false, //点击遮罩关闭层
-                                area : ['600px' , '350px'],
-                                content: $('.add_tags_dialog'),
-                                btn : ['添加' , '取消'],
-                                cancel : function(index , layero){
-                                    layer.close(index);
-                                },
-                                yes : function(index , layero){
-                                    
-                                }
-
-                            });
+                       
+                    },
+                    'mouseover' : {
+                        '.head_img' :  function(){
+                            $('.myname').stop(true);
+                            $('.myname').animate({marginTop:'100px'},200);
+                            // $('.myname').stop();
+                        }
+                    },
+                    'mouseout' : {
+                        '.head_img' :  function(){
+                            $('.myname').stop(true);
+                            $('.myname').animate({marginTop:'140px'});                  
                         }
                     }
                 })

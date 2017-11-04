@@ -68,7 +68,9 @@
             }
             //将对应的logo数据的status改为使用中
             $logo = $articleService->changeLogoStatus($data['logo_id'], Constants::TAG_STATUS_USE);
-
+            if(empty($logo)){
+                return $this->error('添加文章logo失败');
+            }
             return $this->success('成功');
             //生成静态化的文件
 
@@ -131,6 +133,59 @@
          * 保存文章的修改
          */
         public function updateArticle(Request $request, ArticleService $articleService){
+            $data = $request->all();
 
+            if(empty($data['id']) || empty($data['name']) || empty($data['author']) || empty($data['content']) || empty($data['logo_id']) || empty($data['introduct']) || empty($data['tags'])){
+                return $this->error('缺少参数');
+            }
+            //开启事务
+            $this->startTrans();
+            //将文章的数据入库
+            $update = $articleService->updateArticle($data);
+            if($update == false){
+                return $this->error('更新文章失败');
+            }
+
+            //储存文章标签数据
+            $tags = array_unique($data['tags']);
+            //获取文章的标签
+            $article_tags = $articleService->getTagIdsByArticleId($data['id']);
+            if(empty($article_tags)){
+                //如果没有标签,则所有的标签全部插入
+                foreach($tags as $tag){
+                    $article_tag = $articleService->addArticleTag($data['id'], $tag);
+                    if(empty($article_tag)){
+                        return $this->error('添加文章标签失败');
+                    }
+                }
+            }else{
+                //对比标签的不同
+                foreach($tags as $tag){
+                    if(!in_array($tag, $article_tags)){
+                        // 原来没有的加入
+                        $article_tag = $articleService->addArticleTag($data['id'], $tag);
+                        if(empty($article_tag)){
+                            return $this->error('添加文章标签失败');
+                        }
+                    }
+                }
+                foreach($article_tags as $article_tag_old){
+                    if(!in_array($article_tag_old, $tags)){
+                        // 原来有的,现在没有的,删除
+                        $article_tag = $articleService->deleteArticleTag($data['id'], $article_tag_old);
+                        if($article_tag === false){
+                            return $this->error('删除文章标签失败');
+                        }
+                    }
+                }
+            }
+
+            //将对应的logo数据的status改为使用中
+            $logo = $articleService->changeLogoStatus($data['logo_id'], Constants::TAG_STATUS_USE);
+            if($logo === false){
+                return $this->error('更新文章logo失败');
+            }
+            return $this->success('成功');
+            //生成静态化的文件
         }
     }

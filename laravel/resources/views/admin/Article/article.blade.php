@@ -29,7 +29,7 @@
             margin: 0px auto;
             border-collapse: collapse;
         }
-        .articles_table th,.articles_table td{
+        .articles_table th{
             border: solid #ccc 1px;
             height: 40px;
             line-height: 40px;
@@ -39,6 +39,8 @@
             text-align: center;
         }
         .articles_table td{
+            border: solid #ccc 1px;
+            text-align: center;
             height: 100px;
             overflow: hidden;
         }
@@ -94,6 +96,13 @@
         }
         .offline_tr .update_btn a{
             color: #CCC;
+        }
+
+        .introduce{
+            width: 200px;
+            height: 100px;
+            font-size: 12px;
+            overflow: hidden;
         }
         /*文章列表样式结束*/
 
@@ -190,7 +199,7 @@
                 </td>
                 <td>{{name}}</td>
                 <td>{{author}}</td>
-                <td title='{{introduce}}'>{{introduce}}</td>
+                <td><div class='introduce' title='{{introduce}}'>{{introduce}}</div></td>
                 <td>
                     {{#each tags}}
                     <div class='tag color_{{color}} {{#eq status 0}}ban{{/eq}}' data_id='{{id}}'>{{name}}</div>

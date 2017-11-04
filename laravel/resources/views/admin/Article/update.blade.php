@@ -254,7 +254,7 @@
                 $('#input_file_btn').css('background','url('+data.info.logo.url+')');
                 $('#input_file_btn').css('backgroundSize','180px 120px');
                 $('#input_file_btn').css('backgroundRepeat','no-repeat');               
-                $('#input_file').attr('logo_id',data.info.logo.logo_id);
+                $('#input_file').attr('logo_id',data.info.logo.id);
                 //设置标签
                 $('.show_tags ul').html($('#selected_tags').template(data.info.tags));
 
@@ -458,9 +458,12 @@
                         $.post('/Admin/Article/updateArticle', data, function(data){
                             //添加成功后，跳转到文章列表页面，否则留在本页面
                             if(data.status){
-                                window.location.href = '/Admin/Article/index';
+                                layer.alert('修改成功', function(){
+                                    window.location.href = '/Admin/Article/index';
+                                });
+                                
                             }else{
-                                layer.alert('保存文章失败，请重试!', {icon: 6});
+                                layer.alert(data.info, {icon: 6});
                             }
                         });
                     }

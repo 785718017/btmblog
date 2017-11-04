@@ -10,10 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
 Route::post('Admin/Tags/getTags' , 'Admin\TagsController@getTags');
 
 //后台
@@ -38,7 +34,7 @@ Route::Group(['namespace' => 'Admin' , 'prefix' => 'Admin'],function(){
         //修改文章页面
         Route::get('update','ArticleController@update');
         //修改文章
-        Route::get('updateArticle','ArticleController@updateArticle');
+        Route::post('updateArticle','ArticleController@updateArticle');
 
         //文章下线
         Route::post('onlineOrOffline' , 'ArticleController@onlineOrOffline');
@@ -69,13 +65,25 @@ Route::Group(['namespace' => 'Admin' , 'prefix' => 'Admin'],function(){
     });
 });
 
+
+
 //前台
 Route::Group(['namespace' => 'Home'],function(){
     //前台首页
     Route::get('/' , 'IndexController@index');
-});
 
-//获取文章logo图片等资源文件
-//Route::get('/article_logo/{name}',function ($name){
-//    return \App\Util\ImageRoute::imageStorageRoute('/article_logo/'.$name);
-//});
+    Route::Group(['prefix' => 'Article'],function(){
+        //获取推荐文章(最新的五篇文章)
+        Route::post('getRecommend' , 'ArticleController@getRecommend');
+
+        //获取点击量最多的9篇文章
+        Route::post('getHotNineArticles' , 'ArticleController@getHotNineArticles');
+
+    });
+    Route::Group(['prefix' => 'Tags'],function(){
+        //获取热门标签
+        Route::post('getHotTags' , 'TagsController@getHotTags');
+
+
+    });
+});

@@ -154,11 +154,107 @@ class ArticleService extends CommonService
         //获取标签数据
         $ArticleTagModel = new ArticleTagModel();
         $tag_ids = $ArticleTagModel->getTagIdsByArticleId($id);
-
+        if(empty($tag_ids)){
+            return array();
+        }
         $TagsModel = new TagsModel();
         $tags = $TagsModel->getTagByIds($tag_ids);
         $article->tags = $tags;
 
         return $article;
     }
+    /**
+     * 更新文章内容
+     *  @param array $data 文章信息
+     */
+    public function updateArticle($data){
+        $ArticleModel = new ArticleModel();
+
+        $article['name'] = $data['name'];
+        $article['author'] = $data['author'];
+        $article['content'] = $data['content'];
+        $article['logo'] = $data['logo_id'];
+        $article['introduce'] = $data['introduct'];
+
+        $now_time = date('Y-m-d H:i:s');
+        $article['publish_time'] = $now_time;
+        $article['rewrite_time'] = $now_time;
+
+        $article = $ArticleModel->where('id',$data['id'])->update($article);
+        if($article < 0){
+            return false;
+        }
+        return $article;
+    }
+    /**
+     * 获取文章的标签id
+     * @param $id 文章id
+     */
+    public function getTagIdsByArticleId($id){
+        $ArticleTagModel = new ArticleTagModel();
+        $tag_ids = $ArticleTagModel->getTagIdsByArticleId($id);
+        if(empty($tag_ids)){
+            return array();
+        }
+        return $tag_ids;
+    }
+    /**
+     * 删除文章的id
+     * @param int $aid 文章id
+     * @param int $tid 标签id
+     */
+    public function deleteArticleTag($aid, $tid){
+        $ArticleTagModel = new ArticleTagModel();
+        $delete = $ArticleTagModel->where('article_id', $aid)
+                        ->where('tag_id', $tid)
+                        ->delete();
+        return $delete>0 ? $delete : false;
+    }
+
+    /**
+     * 获取推荐的文章列表(即最新的5篇文章)
+     */
+    public function getRecommend(){
+        $ArticleModel = new ArticleModel();
+        $articles = $ArticleModel->getRecommend();
+        if(empty($articles)){
+            return array();
+        }
+
+        //获取logo和标签
+        $articles->map(function( $item){
+            $ArticleLogoModel = new ArticleLogoModel();
+            $logo = $ArticleLogoModel->getLogoById($item->logo);
+            if(!empty($logo)){
+                $item->logo = $logo;
+            }
+
+            $ArticleTagModel = new ArticleTagModel();
+            $TagsModel = new TagsModel();
+            $tag_ids = $ArticleTagModel->getTagIdsByArticleId($item->id);
+            if(!empty($tag_ids)){
+                //获取标签的信息
+                $tags = $TagsModel->getTagByIds($tag_ids);
+                if(empty($tags)){
+                    return array();
+                }
+                $item->tags = $tags;
+            }
+            return $item;
+
+        });
+
+
+        return $articles;
+    }
+
+    /**
+     * 获取阅读量最高的9篇文章
+     */
+    public function getHotNineArticles(){
+        $ArticleModel = new ArticleModel();
+        $articles = $ArticleModel->getHotNineArticles();
+        return $articles;
+    }
+
 }

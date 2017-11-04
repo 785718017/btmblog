@@ -55,3 +55,32 @@ body{
 	color: #999;	
 }
 /*公共导航栏样式结束*/
+/*标签背景色开始*/
+.tag{
+    display: inline-block;
+    padding: 5px 10px;
+    color:#FFF;
+    font-size: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px 5px;
+}
+.color_1{
+    background-color: #71a532;
+}
+.color_2{
+    background-color: #ff9900;
+}
+.color_3{
+    background-color: #8c49ad;
+}
+.color_4{
+    background-color: #e7769e;
+}
+.color_5{
+    background-color: #a98659;
+}
+.color_6{
+    background-color: #63B6F7;
+}'
+/*标签背景色结束*/

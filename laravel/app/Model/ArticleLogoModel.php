@@ -31,8 +31,8 @@ class ArticleLogoModel extends Model
      */
     public function changeLogoStatus($logo_id, $status){
         $logo = $this->where('id', $logo_id)->update(['status' => $status]);
-        if(empty($logo)){
-            return array();
+        if($logo < 0){
+            return false;
         }
         return $logo;
     }

@@ -65,6 +65,19 @@ class TagsModel extends Model
      */
     public function getTagByIds($ids){
         $tags = $this->whereIn('id', $ids)->get();
+        if($tags->isEmpty()){
+            return array();
+        }
+        return $tags;
+    }
+
+    /**
+     * 获取所有级别不为1的可用标签
+     */
+    public function getHotTags(){
+        $tags = $this->where('level','<>',Constants::TAG_LEVEL_ONE)
+                    ->where('status',Constants::TAG_STATUS_USE)
+                    ->get()->toArray();
         if(empty($tags)){
             return array();
         }

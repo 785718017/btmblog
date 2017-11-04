@@ -48,4 +48,27 @@ class ArticleModel extends Model
         }
         return $article;
     }
+
+    /**
+     * 获取推荐的文章列表(即最新的5篇文章)
+     */
+    public function getRecommend(){
+        $articles = $this->orderBy('id', 'desc')->limit(5)->get();
+        if($articles->isEmpty()){
+            return array();
+        }
+        return $articles;
+
+    }
+
+    /**
+     * 获取阅读量最高的9篇文章
+     */
+    public function getHotNineArticles(){
+        $articles = $this->orderBy('browse_times', 'desc')->orderBy('id', 'desc')->limit(9)->get();
+        if($articles->isEmpty()){
+            return array();
+        }
+        return $articles;
+    }
 }
