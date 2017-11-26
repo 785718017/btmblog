@@ -65,12 +65,18 @@ Route::Group(['namespace' => 'Admin' , 'prefix' => 'Admin'],function(){
     });
 });
 
-
+Route::post('/login_out', function (\Illuminate\Http\Request $request){
+    $request->session()->flush();
+    return 1;
+});
 
 //前台
 Route::Group(['namespace' => 'Home'],function(){
     //前台首页
     Route::get('/' , 'IndexController@index');
+
+    //个人资料
+    Route::get('/About' , 'UserController@about');
 
     Route::Group(['prefix' => 'Article'],function(){
         //获取推荐文章(最新的五篇文章)
@@ -79,6 +85,15 @@ Route::Group(['namespace' => 'Home'],function(){
         //获取点击量最多的9篇文章
         Route::post('getHotNineArticles' , 'ArticleController@getHotNineArticles');
 
+        //展示文章页面
+        Route::get('/{id}' , 'ArticleController@index');
+
+        //根据文章id,获取文章的详细信息
+        Route::post('getArticleDetail' , 'ArticleController@getArticleDetail');
+
+        //提交评论
+        Route::post('comment' , 'CommentController@comment');
+
     });
     Route::Group(['prefix' => 'Tags'],function(){
         //获取热门标签
@@ -86,4 +101,22 @@ Route::Group(['namespace' => 'Home'],function(){
 
 
     });
+
+
+    //注册页面
+    Route::get('/regist' , 'UserController@regist')->middleware('CheckLogin');
+    //用户组
+    Route::Group(['prefix' => 'User'],function (){
+        //检验用户名是否存在
+        Route::post('checkUserName' , 'UserController@checkUserName')->middleware('CheckLogin');
+        //注册用户
+        Route::post('registUser' , 'UserController@registUser')->middleware('CheckLogin');
+        //登录
+        Route::post('login' , 'UserController@login')->middleware('CheckLogin');
+    });
+
+    //前台公共成功提示页面
+    Route::get('/successNotify/{info}/{time}' ,'Notify@successNotify');
+    //前台公共失败提示页面
+    Route::get('/failNotify/{info}/{time}' ,'Notify@failNotify');
 });

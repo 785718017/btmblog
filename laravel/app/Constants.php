@@ -47,6 +47,12 @@ class Constants{
      * int 0
      */
     const ARTICLE_OFFLINE = 0;
+
+    /**
+     * 登录方式--账号密码登录
+     * int 1
+     */
+    const LOGIN_TYPE_ACCOUNT = 1;
 }
 
 

@@ -34,8 +34,9 @@
             text-align: center;
             margin-top: 140px;
         }
-        .background{
-            background: #F1F0EE;
+        .about_a{
+            text-decoration: none;
+            outline: none;
         }
         /*页面布局*/
         .home_main_content{
@@ -112,7 +113,7 @@
         }
         .article_content{
             width: 494px;
-            height: 100px;
+            height: 106px;
             float: right;
             font-size: 14px;
             color: #413c3c;
@@ -373,53 +374,52 @@
     <!-- 首页banner -->
     <div class='home_banner'>
         <div class='head_img_out_div'>
-            <div class='head_img'>
-                <!-- 显示名字的部分 -->
-                <div class='myname'>
-                    半透明
+            <a href="About" target="_blank" class='about_a'>
+                <div class='head_img'>
+                    <!-- 显示名字的部分 -->
+                    <div class='myname'>
+                        半透明
+                    </div>
                 </div>
-            </div>
+            </a>
+            
         </div>
     </div>
     <!-- 首页主题内容区域 -->
-    <div class='background'>
-        <div class='home_main_content'>
-            <!-- 文章推荐 -->
-            <div class='article_recommend dib'>
-                <div class='article_recommend_title'>文章<span class='article_recommend_title_span'>推荐</span></div>
-                <!-- 文章 -->
-                <div class='article_div'>
+    <div class='home_main_content'>
+        <!-- 文章推荐 -->
+        <div class='article_recommend dib'>
+            <div class='article_recommend_title'>文章<span class='article_recommend_title_span'>推荐</span></div>
+            <!-- 文章 -->
+            <div class='article_div'>
+                
+            </div>
+        </div>
+        <!-- 右侧边栏 -->
+        <div class='right_nav dib'>
+            <!-- 站内搜索 -->
+            <div>
+                <input type="text" class='search_box'/>
+            </div>
+            <!-- 热门标签 -->
+            <div class='hot_tags_div'>
+                <div class='hot_tags_title'>
+                    热门标签:
+                </div>
+                <div class='hot_tags_content'>
                     
                 </div>
             </div>
-            <!-- 右侧边栏 -->
-            <div class='right_nav dib'>
-                <!-- 站内搜索 -->
-                <div>
-                    <input type="text" class='search_box'/>
-                </div>
-                <!-- 热门标签 -->
-                <div class='hot_tags_div'>
-                    <div class='hot_tags_title'>
-                        热门标签:
-                    </div>
-                    <div class='hot_tags_content'>
-                        
-                    </div>
-                </div>
-                <!-- 扫码关注 -->
-                <div></div>
-                <!-- 文章排行 -->
-                <div>
-                    <div class='article_rank_title'>文章排行：</div>
-                    <ul class='rank_ul'>
-                        
-                    </ul>
-                </div>
+            <!-- 扫码关注 -->
+            <div></div>
+            <!-- 文章排行 -->
+            <div>
+                <div class='article_rank_title'>文章排行：</div>
+                <ul class='rank_ul'>
+                    
+                </ul>
             </div>
         </div>
-        <!-- 公共底部-显示网站的基本信息 -->
-        <div></div>
     </div>
     @stop
 @section('script')
@@ -429,7 +429,7 @@
                     <div class='article_info' article_id='{{id}}'>
                         <!-- 标题 -->
                         <div class='article_title'>
-                            <span class='dib'><a href="" class='article_title_a'>{{name}}</a></span>
+                            <span class='dib'><a href="/Article/{{id}}" class='article_title_a'>{{name}}</a></span>
                             <!-- 点踩 -->
                             <span class='dib disagree_span' title='踩'><span class='dib disagree_img'></span><span class='disagree_num'>{{disagree_num}}</span></span>
                             <!-- 点赞 -->

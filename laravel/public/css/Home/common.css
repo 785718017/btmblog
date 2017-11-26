@@ -1,10 +1,4 @@
-/*使用自定义字体*/
-/* @font-face {
-    font-family: writelogo;
-    src: url('write.ttf');
-}
-*/
-/*页面样式*/
+页面样式*/
 body{
 	margin:0px;
 	padding: 0px;
@@ -82,5 +76,85 @@ body{
 }
 .color_6{
     background-color: #63B6F7;
-}'
+}
 /*标签背景色结束*/
+
+/*公共背景开始*/
+.background{
+	background-color: #F1F0EE;
+}
+/*公共背景结束*/
+
+/*公共底部样式开始*/
+.common_bottom_content{
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	background: #F1F0EE;
+}
+/*/*公共底部样式结束*/
+
+/*公共登录窗口样式开始*/
+.login_user_name_div{
+	margin-top: 60px;
+	padding-left: 40px;
+	color: #666666;
+}
+.login_user_name_div input{
+	width: 170px;
+	height: 25px;
+	line-height: 25px;
+	font-size: 16px;
+	padding-left: 10px;
+	color: #666666;
+}
+.login_user_password_div{
+	margin-top: 20px;
+	padding-left: 40px;
+	color: #666666;
+}
+.login_user_password_div input{
+	width: 170px;
+	height: 25px;
+	line-height: 25px;
+	font-size: 16px;
+	padding-left: 10px;
+	color: #666666;
+}
+.common_login_btn{
+	display: inline-block;
+	width: 250px;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	color: #FFF;
+	font-size: 18px;
+	font-weight: bold;
+	background-color: #3bafdd;
+	border-radius: 5px;
+	margin-left: 42px;
+	margin-top: 20px;
+	cursor: pointer;
+}
+.change_login_method{
+	margin-top: 20px;
+	text-align: center;
+}
+.change_login_method span{
+	display: inline-block;
+	padding: 5px 10px;
+	font-size: 14px;
+	color: #666666;
+	cursor: pointer;
+}
+.no_account_regist_div{
+	margin-top: 5px;
+	text-align: center;
+	font-size: 12px;
+	color: #666666;
+}
+.no_account_regist_div a{
+	text-decoration: none;
+	color: #f26e6a;
+}
+/*公共登录窗口样式结束*/

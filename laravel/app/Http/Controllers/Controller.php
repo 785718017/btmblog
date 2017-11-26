@@ -15,18 +15,37 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     /**
-     * 储存请求对象
-     */
-    protected $Request = null;
-    /**
      * 事务的开启状态
      */
     protected $trans_status = false;
+
+    /**
+     * 用户id
+     */
+    protected $uid = null;
+    /**
+     * 昵称
+     */
+    protected $nick_name = null;
+    /**
+     * 登录方式
+     */
+    protected $login_type = null;
+    /**
+     * 用户头像
+     */
+    protected $head = null;
     /**
      * 初始化时调用的服务
      */
     public function  __construct(Request $Request){
-        $this->$Request = $Request;
+        //laravel 5.3 之后就无法再构造函数中获取session了,因为中间件还未加载,参考官方文档http://laravelacademy.org/post/5691.html
+        //如果用户已登录,则设置uid等属性
+//        $this->uid = $Request->session()->get('uid');
+//        $this->nick_name = $Request->session()->get('nick_name');
+//        $this->login_type = $Request->session()->get('login_type');
+//        $this->head = $Request->session()->get('head');
+
     }
 
     /**

@@ -1,8 +1,8 @@
 <!-- 公共导航栏 -->
 	<div class='common_nav'>
-		<a href=""><div class='home_img dib'></div></a>
+		<a href="/"><div class='home_img dib'></div></a>
 		<div class='common_nav_box dib'>
-			<a href="" class='dib'><span class='dib common_nav_list'>首页</span><div class='small_nav hide'>home</div></a>
+			<a href="/" class='dib'><span class='dib common_nav_list'>首页</span><div class='small_nav hide'>home</div></a>
 			<a href="" class='dib'><span class='dib common_nav_list'>编程语言</span><div class='small_nav hide'>language</div></a>
 			<a href="" class='dib'><span class='dib common_nav_list'>web前端</span><div class='small_nav hide'>vision</div></a>
 			<a href="" class='dib'><span class='dib common_nav_list'>数据处理</span><div class='small_nav hide'>data</div></a>

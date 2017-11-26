@@ -102,7 +102,8 @@
             width: 200px;
             height: 100px;
             font-size: 12px;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
         /*文章列表样式结束*/
 
