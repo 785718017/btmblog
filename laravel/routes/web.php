@@ -94,6 +94,14 @@ Route::Group(['namespace' => 'Home'],function(){
         //提交评论
         Route::post('comment' , 'CommentController@comment');
 
+        //获取文章的点赞、评论等信息
+        Route::post('getArticleRelateInfo' , 'ArticleController@getArticleRelateInfo');
+
+        //回复评论
+        Route::post('replyForComment' , 'CommentController@replyForComment');
+
+        //回复评论的回复
+        Route::post('replyForReply' , 'CommentController@replyForReply');
     });
     Route::Group(['prefix' => 'Tags'],function(){
         //获取热门标签

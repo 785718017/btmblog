@@ -53,6 +53,23 @@ class Constants{
      * int 1
      */
     const LOGIN_TYPE_ACCOUNT = 1;
+
+    /**
+     * 文章评论状态--展示
+     */
+    const ARTICLE_COMMENT_STATUS_SHOW = 1;
+    /**
+     * 文章评论状态--不展示
+     */
+    const ARTICLE_COMMENT_STATUS_NOT_SHOW = 2;
+    /**
+     * 文章评论回复状态--展示
+     */
+    const ARTICLE_COMMENT_REPLY_STATUS_SHOW = 1;
+    /**
+     * 文章评论回复状态--不展示
+     */
+    const ARTICLE_COMMENT_REPLY_STATUS_NOT_SHOW = 2;
 }
 
 

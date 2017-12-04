@@ -48,4 +48,14 @@ class Util
 
         return $arr;
     }
+
+    /**
+     * 将查询出来的集合转化为二位数组
+     */
+//    public function collection_to_array($collection){
+//        $array = array();
+//        $collection->map(function($item, $key){
+//            $array[$key] = $item;
+//        });
+//    }
 }

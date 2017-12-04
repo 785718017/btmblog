@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Constants;
 
 class ArticleCommentModel extends Model
 {
@@ -32,5 +33,46 @@ class ArticleCommentModel extends Model
             return false;
         }
         return true;
+    }
+
+    /**
+     * @param $article_id 文章id
+     */
+    public function getShowCommentsByArticleId($article_id){
+        $where = array(
+            ['article_id', '=', $article_id],
+            ['status', '=', Constants::ARTICLE_COMMENT_STATUS_SHOW]
+        );
+        $comments = $this->where($where)->orderBy('publish_time','desc')->paginate(8);
+        if($comments->isEmpty()){
+            return array();
+        }
+        $pages = $comments->links();
+        $arr = array();
+        foreach($comments as $key=>$comment){
+            $arr[$key]['id'] = $comment->id;
+            $arr[$key]['user_id'] = $comment->user_id;
+            $arr[$key]['content'] = $comment->content;
+            $arr[$key]['article_id'] = $comment->article_id;
+            $arr[$key]['email'] = $comment->email;
+            $arr[$key]['agree_num'] = $comment->agree_num;
+            $arr[$key]['disagree_num'] = $comment->disagree_num;
+            $arr[$key]['publish_time'] = $comment->publish_time;
+            $arr[$key]['status'] = $comment->status;
+        }
+
+        return array('comments' => $arr, 'pages' => strval($pages));
+    }
+
+    /**
+     * 根据id获取评论
+     * @param $comment_id 评论id
+     */
+    public function getCommentById($comment_id){
+        $comment = $this->where('id', $comment_id)->first();
+        if(empty($comment)){
+            return array();
+        }
+        return $comment;
     }
 }

@@ -88,7 +88,7 @@
 
             //获取分页
             $pages = $articles->links();
-            $data['pages'] = (string)$pages;
+            $data['pages'] = strval($pages);
 
 
             return $this->success($data);

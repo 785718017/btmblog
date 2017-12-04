@@ -74,4 +74,16 @@ class UserModel extends Model
         }
         return $user;
     }
+
+    /**
+     * 根据用户id数组获取用户的信息数组
+     * @param $user_ids
+     */
+    public function getUserByIds($user_ids){
+        $users = $this->whereIn('id', $user_ids)->get()->toArray();
+        if(empty($users)){
+            return array();
+        }
+        return $users;
+    }
 }

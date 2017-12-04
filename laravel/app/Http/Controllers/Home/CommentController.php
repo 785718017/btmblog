@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Home;
 
+use App\Constants;
 use App\Service\CommentService;
+use App\Service\ReplyService;
 use App\Service\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -47,5 +49,87 @@ class CommentController extends Controller
             'time' => $time
         ];
         return $this->success($info);
+    }
+
+    /**
+     * 回复评论
+     */
+    public function replyForComment(Request $request, CommentService $commentService, ReplyService $replyService){
+        $reply_content = $request->input('reply_content');
+        $reply_email = $request->input('reply_email');
+        $comment_id = $request->input('comment_id');
+        $reply_for_uid = $request->input('reply_for_uid');
+
+        if(empty($reply_content) || empty($comment_id) || empty($reply_for_uid)){
+            return $this->error('缺少参数');
+        }
+
+        $uid = session('uid'); //用户id
+        if(empty($uid)){
+            return $this->error('用户未登录');
+        }
+
+        if(empty($reply_email)){
+            $reply_email = '';
+        }
+
+        //判断评论是否属于该用户,判断评论是否被删除
+        $comment = $commentService->getCommentById($comment_id);
+        if($comment->user_id != $reply_for_uid){
+            return $this->error('评论和用户信息不匹配');
+        }
+
+        if($comment->status == Constants::ARTICLE_COMMENT_STATUS_NOT_SHOW){
+            return $this->error('该评论已关闭,请勿回复!');
+        }
+
+        $this->startTrans();
+        //添加回复
+        $res = $replyService->addReply($reply_content, $reply_email, $comment_id, $reply_for_uid, $uid);
+        if(empty($res)){
+            return $this->error('回复失败');
+        }
+        return $this->success($res);
+    }
+
+    /**
+     * 回复评论的回复
+     */
+    public function replyForReply(Request $request, CommentService $commentService, ReplyService $replyService){
+        $reply_content = $request->input('reply_content');
+        $reply_email = $request->input('reply_email');
+        $comment_id = $request->input('comment_id');
+        $reply_for_uid = $request->input('reply_for_uid');
+
+        if(empty($reply_content) || empty($comment_id) || empty($reply_for_uid)){
+            return $this->error('缺少参数');
+        }
+
+        $uid = session('uid'); //用户id
+        if(empty($uid)){
+            return $this->error('用户未登录');
+        }
+
+        if(empty($reply_email)){
+            $reply_email = '';
+        }
+
+        //判断评论是否属于该用户,判断评论是否被删除
+        $comment = $commentService->getCommentById($comment_id);
+//        if($comment->user_id != $reply_for_uid){
+//            return $this->error('评论和用户信息不匹配');
+//        }
+
+        if($comment->status == Constants::ARTICLE_COMMENT_STATUS_NOT_SHOW){
+            return $this->error('该评论已关闭,请勿回复!');
+        }
+
+        $this->startTrans();
+        //添加回复
+        $res = $replyService->addReply($reply_content, $reply_email, $comment_id, $reply_for_uid, $uid);
+        if(empty($res)){
+            return $this->error('回复失败');
+        }
+        return $this->success($res);
     }
 }
