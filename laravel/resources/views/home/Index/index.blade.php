@@ -161,8 +161,7 @@
             background-size:63px 63px;
             background-repeat: no-repeat;
             background-position: -21px -21px;
-            float: left;
-            cursor: pointer;
+            float: left;            
         }
         .agree_num{
             height: 25px;
@@ -171,7 +170,15 @@
             font-size: 14px;
             color: #36353b;
             float: left;
+        }
+        .agree_num.hadAgree{
+            color: #ec4b38;
+        }
+        .agree_img.enable{
             cursor: pointer;
+        }
+        .agree_img.hadAgree{
+            background-position: -21px -42px;
         }
         .disagree_span{
             width: 70px;
@@ -188,7 +195,6 @@
             background-repeat: no-repeat;
             background-position: -42px -21px;
             float: left;
-            cursor: pointer;
         }
         .disagree_num{
             height: 25px;
@@ -197,7 +203,15 @@
             font-size: 14px;
             color: #36353b;
             float: left;
+        }
+        .disagree_num.hadDisagree{
+            color: #ec4b38;
+        }
+        .disagree_img.enable{
             cursor: pointer;
+        }
+        .disagree_img.hadDisagree{
+            background-position: -42px -42px;
         }
         .tag_author_time_comment{
             width: 494px;
@@ -283,7 +297,6 @@
             background-repeat: no-repeat;
             background-position: 0px -50px;
             float: left;
-            cursor: pointer;
             margin-right:3px;
         }
         .comment_num{
@@ -293,7 +306,6 @@
             font-size: 14px;
             color: #36353b;
             float: left;
-            cursor: pointer;
         }
         .no_tags{
             display: inline-block;
@@ -429,11 +441,11 @@
                     <div class='article_info' article_id='{{id}}'>
                         <!-- 标题 -->
                         <div class='article_title'>
-                            <span class='dib'><a href="/Article/{{id}}" class='article_title_a'>{{name}}</a></span>
+                            <span class='dib'><a href="/Article/{{id}}" class='article_title_a' target="_blank">{{name}}</a></span>
                             <!-- 点踩 -->
-                            <span class='dib disagree_span' title='踩'><span class='dib disagree_img'></span><span class='disagree_num'>{{disagree_num}}</span></span>
+                            <span class='dib disagree_span' title='踩'><span class='dib disagree_img {{#eq agree_type 0}}enable{{/eq}} {{#eq agree_type 2}}hadDisagree{{/eq}}' article_id='{{id}}'></span><span class='disagree_num {{#eq agree_type 2}}hadDisagree{{/eq}}' article_id='{{id}}' disagree_num='{{disagree_num}}'>{{disagree_num}}</span></span>
                             <!-- 点赞 -->
-                            <span class='dib agree_span' title='赞'><span class='dib agree_img'></span><span class='agree_num'>{{agree_num}}</span></span>
+                            <span class='dib agree_span' title='赞'><span class='dib agree_img {{#eq agree_type 0}}enable{{/eq}} {{#eq agree_type 1}}hadAgree{{/eq}}' article_id='{{id}}'></span><span class='agree_num {{#eq agree_type 1}}hadAgree{{/eq}}' article_id='{{id}}' agree_num='{{agree_num}}'>{{agree_num}}</span></span>
                             <!-- 浏览量 -->
                             <span class='dib vision_span' title='浏览量'><span class='dib vision_img'></span><span class='vision_num'>{{browse_times}}</span></span>
                         </div>
@@ -444,7 +456,7 @@
                             <!-- 内容简要 -->
                             <div class='dib article_content_big_div'>
                                 <div class='dib article_content'>
-                                    <a href="">{{introduce}}</a>
+                                    <a href="/Article/{{id}}" target="_blank">{{introduce}}</a>
                                 </div>
                                 <!-- 文章信息和操作区域 -点赞-点踩-评论 -->
                                 <div class='dib tag_author_time_comment'>
@@ -473,7 +485,7 @@
                                         </span>                                                                     
                                         <!-- 评论-跳转到文章的评论页面 -->
                                         <span class='comment_span dib' title='评论'>
-                                            <span class='dib comment_img'></span><span class='comment_num'>356</span>
+                                            <span class='dib comment_img'></span><span class='comment_num'>{{comment_num}}</span>
                                         </span>
                                     </div>
                                 </div>
@@ -534,7 +546,40 @@
 
                 $('body').onEvent({
                     'click' : {
-                       
+                       '.agree_img.enable' : function(){
+                            var article_id = $(this).attr('article_id');
+                            $.post('/Article/addArticleAgree',{article_id : article_id},function(data){
+                                if(data.status){
+                                    //将该点赞按钮和点踩按钮变成不可点击
+                                    $('.agree_img[article_id='+data.info.article_id+']').removeClass('enable').addClass('hadAgree');
+                                    $('.disagree_img[article_id='+data.info.article_id+']').removeClass('enable');
+                                    var agree_num = $('.agree_num[article_id='+data.info.article_id+']').attr('agree_num');
+                                    agree_num = parseInt(agree_num) + 1;
+                                    $('.agree_num[article_id='+data.info.article_id+']').html(agree_num).addClass('hadAgree');
+
+                                    layer.msg('操作成功！');                                    
+                                }else{
+                                    layer.msg(data.info);
+                                }
+                            })
+                       },
+                       '.disagree_img.enable' : function(){
+                            var article_id = $(this).attr('article_id');
+                            $.post('/Article/addArticleDisagree',{article_id : article_id},function(data){
+                                if(data.status){
+                                    //将该点赞按钮和点踩按钮变成不可点击
+                                    $('.agree_img[article_id='+data.info.article_id+']').removeClass('enable');
+                                    $('.disagree_img[article_id='+data.info.article_id+']').removeClass('enable').addClass('hadDisagree');
+                                    var disagree_num = $('.disagree_num[article_id='+data.info.article_id+']').attr('disagree_num');
+                                    disagree_num = parseInt(disagree_num) + 1;
+                                    $('.disagree_num[article_id='+data.info.article_id+']').html(disagree_num).addClass('hadDisagree');
+
+                                    layer.msg('操作成功！');                                    
+                                }else{
+                                    layer.msg(data.info);
+                                }
+                            })
+                       }
                     },
                     'mouseover' : {
                         '.head_img' :  function(){

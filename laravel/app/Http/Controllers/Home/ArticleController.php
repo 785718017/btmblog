@@ -8,6 +8,7 @@ use App\Service\CommentService;
 use App\Service\ReplyService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class ArticleController extends Controller
 {
@@ -17,7 +18,7 @@ class ArticleController extends Controller
     /**
      * 获取推荐的文章列表(即最新的5篇文章)
      */
-    public function getRecommend(ArticleService $articleService){
+    public function getRecommend(ArticleService $articleService,CommentService $commentService){
         $articles =  $articleService->getRecommend();
         if(empty($articles)){
             return $this->error('获取数据失败');
@@ -41,7 +42,17 @@ class ArticleController extends Controller
      */
     public function index($id){
 //        $id = $request->input('id');
-        return view('Home/Article/index' , ['page_title' => '文章' , 'id' => $id]);
+        //增加一条阅读量
+        $this->startTrans();
+        $articleService = new ArticleService();
+        $res = $articleService->increaseVisionTimes($id);
+        if(empty($res)){
+            DB::rollback();
+            echo '获取文章数据出错,请刷新重试!';
+        }else{
+            DB::commit();
+            return view('Home/Article/index' , ['page_title' => '文章' , 'id' => $id]);
+        }
     }
 
     /**
@@ -70,8 +81,6 @@ class ArticleController extends Controller
         if(empty($uid)){
             $uid = 0;
         }
-        //获取用户对文章的点赞情况以及文章自身的点赞点踩数量
-//        $articleService->
 
         //获取文章的所有评论、回复以及用户对评论、回复的点赞情况
         $comments = $commentService->getCommentsAndReplys($id, $uid);
@@ -86,5 +95,51 @@ class ArticleController extends Controller
             'pages' => $pages
         ];
         return $this->success($data);
+    }
+
+    /**
+     * 用户点赞文章
+     */
+    public function addArticleAgree(Request $request, ArticleService $articleService){
+        //判断用户是否已登录
+        $uid = session('uid'); //用户id
+        if(empty($uid)){
+            return $this->error('请登录后再操作!');
+        }
+        $article_id = $request->input('article_id');
+
+        $had_agree = $articleService->hadUserAgreeArticle($article_id, $uid);
+        if(!empty($had_agree)){
+            return $this->error('您已经对这篇文章点过赞或者点过踩了!');
+        }
+        $this->startTrans();
+        $res = $articleService->addArticleAgree($article_id, $uid);
+        if(empty($res)){
+            return $this->error('操作失败!');
+        }
+        return $this->success(['article_id' => $article_id]);
+    }
+
+    /**
+     * 用户点踩文章
+     */
+    public function addArticleDisagree(Request $request, ArticleService $articleService){
+        //判断用户是否已登录
+        $uid = session('uid'); //用户id
+        if(empty($uid)){
+            return $this->error('请登录后再操作!');
+        }
+        $article_id = $request->input('article_id');
+
+        $had_agree = $articleService->hadUserAgreeArticle($article_id, $uid);
+        if(!empty($had_agree)){
+            return $this->error('您已经对这篇文章点过赞或者点过踩了!');
+        }
+        $this->startTrans();
+        $res = $articleService->addArticleDisagree($article_id, $uid);
+        if(empty($res)){
+            return $this->error('操作失败!');
+        }
+        return $this->success(['article_id' => $article_id]);
     }
 }

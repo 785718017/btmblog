@@ -71,4 +71,45 @@ class ArticleModel extends Model
         }
         return $articles;
     }
+
+    /**
+     * 增加阅读量
+     * @param $id 文章id
+     * @param $vision_times 新的阅读量
+     */
+    public function increaseVisionTimes($id, $vision_times){
+        $data = array();
+        $data['browse_times'] = $vision_times;
+        $res = $this->where('id', $id)->update($data);
+        if(empty($res)){
+            return array();
+        }
+        return $res;
+    }
+
+    /**
+     * 修改点赞数量
+     * @param $article_id 文章id
+     * @param $num 新的点赞数量
+     */
+    public function addArticleAgree($article_id, $num){
+        $res = $this->where('id', $article_id)->update(['agree_num' => $num]);
+        if(empty($res)){
+            return array();
+        }
+        return $res;
+    }
+
+    /**
+     * 修改点赞数量
+     * @param $article_id 文章id
+     * @param $num 新的点赞数量
+     */
+    public function addArticleDisagree($article_id, $num){
+        $res = $this->where('id', $article_id)->update(['disagree_num' => $num]);
+        if(empty($res)){
+            return array();
+        }
+        return $res;
+    }
 }

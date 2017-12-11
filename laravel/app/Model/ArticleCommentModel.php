@@ -75,4 +75,42 @@ class ArticleCommentModel extends Model
         }
         return $comment;
     }
+
+    /**
+     * 根据文章id获取文章的评论数量
+     * @param $article_id 文章id
+     */
+    public function getCommentNumsByArticleId($article_id){
+        $num = $this->where('article_id', $article_id)->count();
+        if(empty($num)){
+            return 0;
+        }
+        return $num;
+    }
+
+    /**
+     * 修改点赞数量
+     * @param $comment_id 评论id
+     * @param $num 新的点赞数量
+     */
+    public function addCommentAgree($comment_id, $num){
+        $res = $this->where('id', $comment_id)->update(['agree_num' => $num]);
+        if(empty($res)){
+            return array();
+        }
+        return $res;
+    }
+
+    /**
+     * 修改点踩数量
+     * @param $comment_id 评论id
+     * @param $num 新的点赞数量
+     */
+    public function addCommentDisagree($comment_id, $num){
+        $res = $this->where('id', $comment_id)->update(['disagree_num' => $num]);
+        if(empty($res)){
+            return array();
+        }
+        return $res;
+    }
 }

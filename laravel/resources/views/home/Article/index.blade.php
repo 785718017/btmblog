@@ -152,7 +152,6 @@
             background-repeat: no-repeat;
             background-position: -28px -28px;
             float: left;
-            cursor: pointer;
         }
         .agree_num{
             height: 25px;
@@ -161,8 +160,16 @@
             font-size: 18px;
             color: #36353b;
             float: left;
-            cursor: pointer;
             margin-top: 5px;
+        }
+        .agree_num.hadAgree{
+            color: #ec4b38;
+        }
+        .agree_img.enable{
+            cursor: pointer;
+        }
+        .agree_img.hadAgree{
+            background-position: -28px -56px;
         }
         .disagree_span{
             display: inline-block;
@@ -179,7 +186,6 @@
             background-repeat: no-repeat;
             background-position: -56px -28px;
             float: left;
-            cursor: pointer;
         }
         .disagree_num{
             height: 25px;
@@ -188,8 +194,16 @@
             font-size: 18px;
             color: #36353b;
             float: left;
-            cursor: pointer;
             margin-top: 5px;
+        }
+        .disagree_num.hadDisagree{
+            color: #ec4b38;
+        }
+        .disagree_img.enable{
+            cursor: pointer;
+        }
+        .disagree_img.hadDisagree{
+            background-position: -56px -56px;
         }
 
         .login_btn{
@@ -311,28 +325,42 @@
             padding-bottom: 5px;
             font-size: 12px;
         }
-        .common_icon{
-            width: 16px;
-            height: 16px;
-            background-image: url("{{asset('/image/home/icons.png')}}");
-            background-size: 48px 48px;
-        }
         .comment_agree,.comment_disagree{
             font-size: 10px;
             color: #666666;
         }
-        .comment_agree .common_icon{
+        .comment_agree_img{
+            width: 16px;
+            height: 16px;
+            background-image: url("{{asset('/image/home/icons.png')}}");
+            background-size: 48px 48px;
             background-position: -16px -16px;
-            cursor: pointer;
             margin-left: 10px;
         }
-        .comment_disagree .common_icon{
-            background-position: -32px -16px;
+        .comment_agree_img.enable{
             cursor: pointer;
         }
+        .comment_agree_img.hadAgree{
+            background-position: -16px -32px;
+        }
+        .comment_disagree_img{
+            width: 16px;
+            height: 16px;
+            background-image: url("{{asset('/image/home/icons.png')}}");
+            background-size: 48px 48px;
+            background-position: -32px -16px;
+        }
+        .comment_disagree_img.enable{
+            cursor: pointer;
+        }
+        .comment_disagree_img.hadDisagree{
+            background-position: -32px -32px;
+        }
         .comment_agree_num,.comment_disagree_num{
+            font-size: 10px;
+            color: #666666;
             display: inline-block;
-            width: 32px;
+            width: 24px;
         }
         .comment_time_div{
             /*margin-left: 90px;*/
@@ -519,6 +547,20 @@
             cursor: pointer;
         }
         /*回复框样式结束*/
+
+        /*没有评论时样式开始*/
+        .no_comments{
+            margin-left: 15px;
+            margin-right: 15px;
+            margin-top: 15px;
+            border-top: solid #ccc 1px;
+            height: 140px;
+            line-height: 140px;
+            font-size: 16px;
+            color: #666666;
+            text-align: center;
+        }
+        /*没有评论时样式结束*/
 	</style>
     @stop
 @section('style_src')
@@ -605,9 +647,9 @@
     <script  id="article_info_right" type="text/x-handlebars-template">
         <div class='agree_left_div'>
             <!-- 点赞 -->
-            <span class='dib agree_span' title='赞'><span class='dib agree_img'></span><span class='agree_num'>{{agree_num}}</span></span>
+            <span class='dib agree_span' title='赞'><span class='dib agree_img {{#eq agree_type 0}}enable{{/eq}} {{#eq agree_type 1}}hadAgree{{/eq}}' article_id='{{id}}'></span><span class='agree_num {{#eq agree_type 1}}hadAgree{{/eq}}' article_id='{{id}}' agree_num='{{agree_num}}'>{{agree_num}}</span></span>
             <!-- 点踩 -->
-            <span class='dib disagree_span' title='踩'><span class='dib disagree_img'></span><span class='disagree_num'>{{disagree_num}}</span></span>
+            <span class='dib disagree_span' title='踩'><span class='dib disagree_img {{#eq agree_type 0}}enable{{/eq}} {{#eq agree_type 2}}hadDisagree{{/eq}}' article_id='{{id}}'></span><span class='disagree_num {{#eq agree_type 2}}hadDisagree{{/eq}}' article_id='{{id}}' disagree_num='{{disagree_num}}'>{{disagree_num}}</span></span>
         </div>
     </script>
     <script  id="article_comments" type="text/x-handlebars-template">
@@ -633,12 +675,10 @@
             <div class='comment_time_div'>
                 <div class='oprs'>  
                     <span class='comment_time'>{{publish_time}}</span>                 
-                    <span class='comment_agree'>
-                        <span class='common_icon dib'></span><span class='comment_agree_num'>12345</span>
-                    </span>
-                    <span class='comment_disagree'>
-                        <span class='common_icon dib'></span><span class='comment_disagree_num'>1243</span>
-                    </span>
+                    <!-- 点赞 -->
+                    <span class='dib comment_agree_span' title='赞'><span class='dib comment_agree_img {{#eq agree_type 0}}enable{{/eq}} {{#eq agree_type 1}}hadAgree{{/eq}}' comment_id='{{id}}'></span><span class='comment_agree_num {{#eq agree_type 1}}hadAgree{{/eq}}' comment_id='{{id}}' agree_num='{{agree_num}}'>{{agree_num}}</span></span>
+                    <!-- 点踩 -->
+                    <span class='dib comment_disagree_span' title='踩'><span class='dib comment_disagree_img {{#eq agree_type 0}}enable{{/eq}} {{#eq agree_type 2}}hadDisagree{{/eq}}' comment_id='{{id}}'></span><span class='comment_disagree_num {{#eq agree_type 2}}hadDisagree{{/eq}}' comment_id='{{id}}' disagree_num='{{disagree_num}}'>{{disagree_num}}</span></span>
                     <span class='reply_btn' comment_id='{{id}}' user_id='{{user_id}}' user_name='{{user_name}}'>回复</span>
                 </div>              
                 
@@ -678,7 +718,9 @@
                    
         {{/each}}
     </script>
-
+    <script  id="no_comments" type="text/x-handlebars-template">
+        <div class='no_comments'>还没有人评论哦~快抢沙发！</div>
+    </script>
     @endverbatim
     <script type="text/javascript">
         $(function(){
@@ -702,13 +744,17 @@
 
             //获取文章的点赞、点踩、评论、回复等信息
             $.post('/Article/getArticleRelateInfo', {id : id}, function(data){
-                //设置点赞和点踩，以及用户是否已经点赞或者点踩
+                if(data.status){
+                    //设置评论和回复
+                    $('.article_comments_replys').html($('#article_comments').template(data.info));
 
-                //设置评论和回复
-                $('.article_comments_replys').html($('#article_comments').template(data.info));
-
-                //设置评论分页
-                $('.page').html(data.info.pages);
+                    //设置评论分页
+                    $('.page').html(data.info.pages);
+                }else{
+                    //没有评论
+                    $('.article_comments_replys').html($('#no_comments').template());                        
+                }
+                
             })
 
             //实例化编辑器
@@ -963,8 +1009,75 @@
                                 layer.msg(data.info);
                             }
                         })
-                    }
+                    },
+                    '.agree_img.enable' : function(){
+                        var article_id = $(this).attr('article_id');
+                        $.post('/Article/addArticleAgree',{article_id : article_id},function(data){
+                            if(data.status){
+                                //将该点赞按钮和点踩按钮变成不可点击
+                                $('.agree_img').removeClass('enable').addClass('hadAgree');
+                                $('.disagree_img').removeClass('enable');
+                                var agree_num = $('.agree_num').attr('agree_num');
+                                agree_num = parseInt(agree_num) + 1;
+                                $('.agree_num').html(agree_num).addClass('hadAgree');
 
+                                layer.msg('操作成功！');                                    
+                            }else{
+                                layer.msg(data.info);
+                            }
+                        })
+                   },
+                   '.disagree_img.enable' : function(){
+                        var article_id = $(this).attr('article_id');
+                        $.post('/Article/addArticleDisagree',{article_id : article_id},function(data){
+                            if(data.status){
+                                //将该点赞按钮和点踩按钮变成不可点击
+                                $('.agree_img').removeClass('enable');
+                                $('.disagree_img').removeClass('enable').addClass('hadDisagree');
+                                var disagree_num = $('.disagree_num').attr('disagree_num');
+                                disagree_num = parseInt(disagree_num) + 1;
+                                $('.disagree_num').html(disagree_num).addClass('hadDisagree');
+
+                                layer.msg('操作成功！');                                    
+                            }else{
+                                layer.msg(data.info);
+                            }
+                        })
+                   },
+                   '.comment_agree_img.enable' : function(){
+                        var comment_id = $(this).attr('comment_id');
+                        $.post('/Article/addCommentAgree',{comment_id : comment_id},function(data){
+                            if(data.status){
+                                //将该点赞按钮和点踩按钮变成不可点击
+                                $('.comment_agree_img[comment_id='+data.info.comment_id+']').removeClass('enable').addClass('hadAgree');
+                                $('.comment_disagree_img[comment_id='+data.info.comment_id+']').removeClass('enable');
+                                var agree_num = $('.comment_agree_num[comment_id='+data.info.comment_id+']').attr('agree_num');
+                                agree_num = parseInt(agree_num) + 1;
+                                $('.comment_agree_num[comment_id='+data.info.comment_id+']').html(agree_num).addClass('hadAgree');
+
+                                layer.msg('操作成功！');                                    
+                            }else{
+                                layer.msg(data.info);
+                            }
+                        })
+                   },
+                   '.comment_disagree_img.enable' : function(){
+                        var comment_id = $(this).attr('comment_id');
+                        $.post('/Article/addCommentDisagree',{comment_id : comment_id},function(data){
+                            if(data.status){
+                                  //将该点赞按钮和点踩按钮变成不可点击
+                                $('.comment_agree_img[comment_id='+data.info.comment_id+']').removeClass('enable');
+                                $('.comment_disagree_img[comment_id='+data.info.comment_id+']').removeClass('enable').addClass('hadDisagree');
+                                var disagree_num = $('.comment_disagree_num[comment_id='+data.info.comment_id+']').attr('disagree_num');
+                                disagree_num = parseInt(disagree_num) + 1;
+                                $('.comment_disagree_num[comment_id='+data.info.comment_id+']').html(disagree_num).addClass('hadAgree');
+
+                                layer.msg('操作成功！');                                 
+                            }else{
+                                layer.msg(data.info);
+                            }
+                        })
+                   }
                 }
             })          
         })

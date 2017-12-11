@@ -3,6 +3,8 @@
 namespace App\Service;
 
 use App\Constants;
+use App\Model\ArticleAgreeModel;
+use App\Model\ArticleCommentModel;
 use App\Model\ArticleLogoModel;
 use App\Model\ArticleModel;
 use App\Model\ArticleTagModel;
@@ -157,6 +159,20 @@ class ArticleService extends CommonService
         if(empty($tag_ids)){
             return array();
         }
+        //获取用户对该文章的点赞点踩情况
+        $uid = session('uid');
+        $ArticleAgreeModel = new ArticleAgreeModel();
+        if(empty($uid)){
+            $article->agree_type = 0; //用户未登录时
+        }else{
+            $info = $ArticleAgreeModel->getArticleAgreeByAidAndUid($article->id, $uid);
+            if(empty($info)){
+                $article->agree_type = 0; //用户没有点赞或者点踩记录时
+            }else{
+                $article->agree_type = $info->agree_type;
+            }
+        }
+
         $TagsModel = new TagsModel();
         $tags = $TagsModel->getTagByIds($tag_ids);
         $article->tags = $tags;
@@ -240,14 +256,33 @@ class ArticleService extends CommonService
                 }
                 $item->tags = $tags;
             }
-            return $item;
 
+            //获取评论的数量
+            $ArticleCommentModel = new ArticleCommentModel();
+            $num = $ArticleCommentModel->getCommentNumsByArticleId($item->id);
+            $item->comment_num = $num;
+
+
+            //判断用户是否对这些文章进行了点赞或者点踩操作
+            $uid = session('uid');
+            $ArticleAgreeModel = new ArticleAgreeModel();
+            if(empty($uid)){
+                $item->agree_type = 0; //用户未登录时
+            }else{
+                $info = $ArticleAgreeModel->getArticleAgreeByAidAndUid($item->id, $uid);
+                if(empty($info)){
+                    $item->agree_type = 0; //用户没有点赞或者点踩记录时
+                }else{
+                    $item->agree_type = $info->agree_type;
+                }
+            }
+
+            return $item;
         });
 
 
         return $articles;
     }
-
     /**
      * 获取阅读量最高的9篇文章
      */
@@ -257,4 +292,90 @@ class ArticleService extends CommonService
         return $articles;
     }
 
+    /**
+     * 增加阅读量
+     * @param $id 文章id
+     */
+    public function increaseVisionTimes($id){
+        $ArticleModel = new ArticleModel();
+        $article = $ArticleModel->getArticleById($id);
+        if(empty($article)){
+            return array();
+        }
+        $vision_times = $article->browse_times + 1;
+        $res = $ArticleModel->increaseVisionTimes($id, $vision_times);
+        if(empty($res)){
+            return array();
+        }
+        return $res;
+    }
+
+    /**
+     * 添加用户的文章点赞信息
+     * @param $article_id 文章id
+     * @param $user_id 用户id
+     */
+    public function addArticleAgree($article_id, $user_id){
+        $ArticleModel = new ArticleModel();
+        $ArticleAgreeModel = new ArticleAgreeModel();
+
+        //获取文章
+        $article = $ArticleModel->getArticleById($article_id);
+        if(empty($article)){
+            return array();
+        }
+        //设置点赞数量
+        $agree_num = $article->agree_num + 1;
+        $res = $ArticleModel->addArticleAgree($article_id, $agree_num);
+        if(empty($res)){
+            return array();
+        }
+        //添加用户点赞记录
+        $res = $ArticleAgreeModel->addUserArticleAgree($article_id, $user_id, Constants::AGREE_TYPE_AGREE);
+        if(empty($res)){
+            return array();
+        }
+        return $res;
+    }
+
+    /**
+     * 添加用户的文章点赞信息
+     * @param $article_id 文章id
+     * @param $user_id 用户id
+     */
+    public function addArticleDisagree($article_id, $user_id){
+        $ArticleModel = new ArticleModel();
+        $ArticleAgreeModel = new ArticleAgreeModel();
+
+        //获取文章
+        $article = $ArticleModel->getArticleById($article_id);
+        if(empty($article)){
+            return array();
+        }
+        //设置点赞数量
+        $disagree_num = $article->disagree_num + 1;
+        $res = $ArticleModel->addArticleDisagree($article_id, $disagree_num);
+        if(empty($res)){
+            return array();
+        }
+        //添加用户点赞记录
+        $res = $ArticleAgreeModel->addUserArticleAgree($article_id, $user_id, Constants::AGREE_TYPE_DISAGREE);
+        if(empty($res)){
+            return array();
+        }
+        return $res;
+    }
+
+    /**
+     * 判断用户是否对该文章进行过点赞或者点踩操作
+     * @param $article_id
+     * @param $user_id
+     * @return boolean 用户点过赞或者点过踩,返回true,否则返回false
+     */
+    public function hadUserAgreeArticle($article_id, $user_id){
+        $ArticleAgreeModel = new ArticleAgreeModel();
+        //判断用户是否对该文章进行过点赞或者点踩操作
+        $had_agree = $ArticleAgreeModel->getArticleAgreeByAidAndUid($article_id, $user_id);
+        return $had_agree;
+    }
 }

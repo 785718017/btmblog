@@ -71,26 +71,24 @@ class CommentService extends CommonService
         $comments = $data['comments'];
         $this->pages = $data['pages'];
 
+        //获取所有评论的id
+        $comment_ids = array_column($comments, 'id');
+        $comment_agrees = array();
         if($uid != 0){
             //非游客用户,获取用户关于这篇文章的评论点赞情况和回复点赞情况
             $ArticleCommentAgreeModel = new ArticleCommentAgreeModel();
-//            $ArticleCommentReplyAgreeModel = new ArticleCommentReplyAgreeModel();
-
             $comment_agrees = $ArticleCommentAgreeModel->getUserArticleCommentAgrees($article_id, $uid);
-            if(empty($comment_agrees)){
-                $comment_agrees = array();
-            }else{
+            if(!empty($comment_agrees)){
                 $comment_agrees = Util::array_convert($comment_agrees, 'comment_id');
             }
 //            $reply_agrees = $ArticleCommentReplyAgreeModel->getUserArticleCommentReplyAgrees($article_id, $uid);
-            if(empty($reply_agrees)){
-                $reply_agrees = array();
-            }else{
-                $reply_agrees = Util::array_convert($reply_agrees, 'reply_id');
-            }
+//            if(empty($reply_agrees)){
+//                $reply_agrees = array();
+//            }else{
+//                $reply_agrees = Util::array_convert($reply_agrees, 'reply_id');
+//            }
         }
-        //获取所有评论的id
-        $comment_ids = array_column($comments, 'id');
+
         //获取所有评论的回复
         $ArticleCommentReplyModel = new ArticleCommentReplyModel();
         $replys = $ArticleCommentReplyModel->getReplysByCommentIds($comment_ids);
@@ -119,8 +117,12 @@ class CommentService extends CommonService
                 //评论的点赞状况
                 if(!empty($comment_agrees)){
                     if(!empty($comment_agrees[$comment['id']])){
-                        $comments[$key]['agree'] = $comment_agrees[$comment['id']]['agree_type'];
+                        $comments[$key]['agree_type'] = $comment_agrees[$comment['id']]['agree_type'];
+                    }else{
+                        $comments[$key]['agree_type'] = 0;
                     }
+                }else{
+                    $comments[$key]['agree_type'] = 0;
                 }
             }
         }else{
@@ -149,8 +151,12 @@ class CommentService extends CommonService
                     //评论的点赞状况
                     if(!empty($comment_agrees)){
                         if(!empty($comment_agrees[$comment['id']])){
-                            $comments[$key]['agree'] = $comment_agrees[$comment['id']]['agree_type'];
+                            $comments[$key]['agree_type'] = $comment_agrees[$comment['id']]['agree_type'];
+                        }else{
+                            $comments[$key]['agree_type'] = 0;
                         }
+                    }else{
+                        $comments[$key]['agree_type'] = 0;
                     }
                 }else{
                     $comments[$key]['replys'] = $comment_replys[$comment['id']];
@@ -166,8 +172,12 @@ class CommentService extends CommonService
                     //评论的点赞状况
                     if(!empty($comment_agrees)){
                         if(!empty($comment_agrees[$comment['id']])){
-                            $comments[$key]['agree'] = $comment_agrees[$comment['id']]['agree_type'];
+                            $comments[$key]['agree_type'] = $comment_agrees[$comment['id']]['agree_type'];
+                        }else{
+                            $comments[$key]['agree_type'] = 0;
                         }
+                    }else{
+                        $comments[$key]['agree_type'] = 0;
                     }
 
                     foreach($comment_replys[$comment['id']] as $k=>$reply){
@@ -201,5 +211,86 @@ class CommentService extends CommonService
         $ArticleCommentModel = new ArticleCommentModel();
         $comment = $ArticleCommentModel->getCommentById($comment_id);
         return $comment;
+    }
+
+    /**
+     * 根据文章id数组获取文章的评论数量
+     * @params $article_ids 文章id数组
+     */
+    public function getArticleCommentsNoByArticleIds($article_ids){
+        $ArticleCommentModel = new ArticleCommentModel();
+        $comment_nums = array();
+        foreach($article_ids as $article_id){
+            $num = $ArticleCommentModel->getCommentNumsByArticleId($article_id);
+            $comment_nums[$article_id] = $num;
+        }
+        return $comment_nums;
+    }
+
+    /**
+     * 判断用户是否对该评论进行过点赞或者点踩操作
+     * @param $comment_id
+     * @param $user_id
+     */
+    public function hadUserAgreeComment($comment_id, $user_id){
+        $ArticleAgreeModel = new ArticleCommentAgreeModel();
+        //判断用户是否对该文章进行过点赞或者点踩操作
+        $had_agree = $ArticleAgreeModel->getCommentAgreeByAidAndUid($comment_id, $user_id);
+        return $had_agree;
+    }
+
+    /**
+     * 添加用户的文章点赞信息
+     * @param $article_id 文章id
+     * @param $user_id 用户id
+     */
+    public function addCommentAgree($comment_id, $user_id){
+        $ArticleCommentModel = new ArticleCommentModel();
+        $ArticleCommentAgreeModel = new ArticleCommentAgreeModel();
+
+        //获取文章
+        $comment = $ArticleCommentModel->getCommentById($comment_id);
+        if(empty($comment)){
+            return array();
+        }
+        //设置点赞数量
+        $agree_num = $comment->agree_num + 1;
+        $res = $ArticleCommentModel->addCommentAgree($comment_id, $agree_num);
+        if(empty($res)){
+            return array();
+        }
+        //添加用户点赞记录
+        $res = $ArticleCommentAgreeModel->addUserCommentAgree($comment->article_id, $comment_id, $user_id, Constants::AGREE_TYPE_AGREE);
+        if(empty($res)){
+            return array();
+        }
+        return $res;
+    }
+    /**
+     * 添加用户的文章点赞信息
+     * @param $article_id 文章id
+     * @param $user_id 用户id
+     */
+    public function addCommentDisagree($comment_id, $user_id){
+        $ArticleCommentModel = new ArticleCommentModel();
+        $ArticleCommentAgreeModel = new ArticleCommentAgreeModel();
+
+        //获取文章
+        $comment = $ArticleCommentModel->getCommentById($comment_id);
+        if(empty($comment)){
+            return array();
+        }
+        //设置点赞数量
+        $disagree_num = $comment->disagree_num + 1;
+        $res = $ArticleCommentModel->addCommentDisagree($comment_id, $disagree_num);
+        if(empty($res)){
+            return array();
+        }
+        //添加用户点赞记录
+        $res = $ArticleCommentAgreeModel->addUserCommentAgree($comment->article_id, $comment_id, $user_id, Constants::AGREE_TYPE_DISAGREE);
+        if(empty($res)){
+            return array();
+        }
+        return $res;
     }
 }

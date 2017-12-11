@@ -102,6 +102,17 @@ Route::Group(['namespace' => 'Home'],function(){
 
         //回复评论的回复
         Route::post('replyForReply' , 'CommentController@replyForReply');
+
+        //点赞文章
+        Route::post('addArticleAgree' , 'ArticleController@addArticleAgree');
+        //点踩文章
+        Route::post('addArticleDisagree' , 'ArticleController@addArticleDisagree');
+
+        //点赞评论
+        Route::post('addCommentAgree' , 'CommentController@addCommentAgree');
+        //点踩评论
+        Route::post('addCommentDisagree' , 'CommentController@addCommentDisagree');
+
     });
     Route::Group(['prefix' => 'Tags'],function(){
         //获取热门标签

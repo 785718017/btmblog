@@ -132,4 +132,50 @@ class CommentController extends Controller
         }
         return $this->success($res);
     }
+
+    /**
+     * 用户点赞评论
+     */
+    public function addCommentAgree(Request $request, CommentService $commentService){
+        //判断用户是否已登录
+        $uid = session('uid'); //用户id
+        if(empty($uid)){
+            return $this->error('请登录后再操作!');
+        }
+        $comment_id = $request->input('comment_id');
+
+        $had_agree = $commentService->hadUserAgreeComment($comment_id, $uid);
+        if(!empty($had_agree)){
+            return $this->error('您已经对这篇文章点过赞或者点过踩了!');
+        }
+        $this->startTrans();
+        $res = $commentService->addCommentAgree($comment_id, $uid);
+        if(empty($res)){
+            return $this->error('操作失败!');
+        }
+        return $this->success(['comment_id' => $comment_id]);
+    }
+
+    /**
+     * 用户点赞评论
+     */
+    public function addCommentDisagree(Request $request, CommentService $commentService){
+        //判断用户是否已登录
+        $uid = session('uid'); //用户id
+        if(empty($uid)){
+            return $this->error('请登录后再操作!');
+        }
+        $comment_id = $request->input('comment_id');
+
+        $had_agree = $commentService->hadUserAgreeComment($comment_id, $uid);
+        if(!empty($had_agree)){
+            return $this->error('您已经对这篇文章点过赞或者点过踩了!');
+        }
+        $this->startTrans();
+        $res = $commentService->addCommentDisagree($comment_id, $uid);
+        if(empty($res)){
+            return $this->error('操作失败!');
+        }
+        return $this->success(['comment_id' => $comment_id]);
+    }
 }

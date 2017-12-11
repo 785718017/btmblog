@@ -70,6 +70,15 @@ class Constants{
      * 文章评论回复状态--不展示
      */
     const ARTICLE_COMMENT_REPLY_STATUS_NOT_SHOW = 2;
+
+    /**
+     * 操作类型--1.点赞
+     */
+    const AGREE_TYPE_AGREE = 1;
+    /**
+     * 操作类型--1.点踩
+     */
+    const AGREE_TYPE_DISAGREE = 2;
 }
 
 
