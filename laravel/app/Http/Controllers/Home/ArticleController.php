@@ -6,6 +6,7 @@ use App\Constants;
 use App\Service\ArticleService;
 use App\Service\CommentService;
 use App\Service\ReplyService;
+use App\Service\TagsService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -141,5 +142,32 @@ class ArticleController extends Controller
             return $this->error('操作失败!');
         }
         return $this->success(['article_id' => $article_id]);
+    }
+
+    /**
+     * 根据文章标签id展示文章列表
+     */
+    public function articleList($tag_id){
+        //获取标签名
+        $TagsService = new TagsService();
+        $tag = $TagsService->getTagById($tag_id);
+        if(empty($tag)){
+            return  redirect('/failNotify/该分类信息不存在!/3');
+        }
+        return view('Home/Article/articleList' , ['page_title' => $tag->name , 'tag' => $tag]);
+    }
+
+    /**
+     * 根据标签id获取文章
+     */
+    public function getArticlesByTagId(Request $request, ArticleService $articleService){
+        $tag_id = $request->input('tag_id');
+        $articles = $articleService->getArticlesByTagId($tag_id);
+        if(empty($articles)){
+            return $this->error('没有文章数据!');
+        }
+        $pages = $articleService->getPages();
+        $data = ['articles'=>$articles,'pages'=>$pages];
+        return $this->success($data);
     }
 }

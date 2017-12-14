@@ -12,6 +12,17 @@ use App\Model\TagsModel;
 
 class ArticleService extends CommonService
 {
+    /**
+     * 分页数据
+     */
+    public $pages = '';
+
+    /**
+     * 获取分页数据
+     */
+    public function getPages(){
+        return $this->pages;
+    }
 	/**
      * 把文章的logo路径储存到数据库中
      * @param $url logo文件的路径
@@ -377,5 +388,80 @@ class ArticleService extends CommonService
         //判断用户是否对该文章进行过点赞或者点踩操作
         $had_agree = $ArticleAgreeModel->getArticleAgreeByAidAndUid($article_id, $user_id);
         return $had_agree;
+    }
+
+    /**
+     * 根据标签id获取文章
+     * @param $tag_id 标签id
+     */
+    public function getArticlesByTagId($tag_id){
+//        $ArticleTagModel = new ArticleTagModel();
+//        $data = $ArticleTagModel->getArticlesByTagId($tag_id);
+//        if(empty($data)){
+//            return array();
+//        }
+//        $article_ids = $data['article_ids'];
+//        $this->pages = $data['pages'];
+//
+//        $ArticleModel = new ArticleModel();
+//        $articles = $ArticleModel->getArticlesByIds($article_ids);
+//        if(empty($articles)){
+//            return array();
+//        }
+
+        //获取文章
+        $ArticleModel = new ArticleModel();
+        $articles = $ArticleModel->getArticlesByTagId($tag_id);
+        if(empty($articles)){
+            return array();
+        }
+        $pages = $articles->links();
+        $this->pages = strval($pages);
+
+        //获取logo和标签
+        $articles->map(function($item){
+            $ArticleLogoModel = new ArticleLogoModel();
+            $logo = $ArticleLogoModel->getLogoById($item->logo);
+            if(!empty($logo)){
+                $item->logo = $logo;
+            }
+
+            $ArticleTagModel = new ArticleTagModel();
+            $TagsModel = new TagsModel();
+            $tag_ids = $ArticleTagModel->getTagIdsByArticleId($item->id);
+            if(!empty($tag_ids)){
+                //获取标签的信息
+                $tags = $TagsModel->getTagByIds($tag_ids);
+                if(empty($tags)){
+                    return array();
+                }
+                $item->tags = $tags;
+            }
+
+            //获取评论的数量
+            $ArticleCommentModel = new ArticleCommentModel();
+            $num = $ArticleCommentModel->getCommentNumsByArticleId($item->id);
+            $item->comment_num = $num;
+
+
+            //判断用户是否对这些文章进行了点赞或者点踩操作
+            $uid = session('uid');
+            $ArticleAgreeModel = new ArticleAgreeModel();
+            if(empty($uid)){
+                $item->agree_type = 0; //用户未登录时
+            }else{
+                $info = $ArticleAgreeModel->getArticleAgreeByAidAndUid($item->id, $uid);
+                if(empty($info)){
+                    $item->agree_type = 0; //用户没有点赞或者点踩记录时
+                }else{
+                    $item->agree_type = $info->agree_type;
+                }
+            }
+
+            return $item;
+        });
+
+
+        return $articles;
     }
 }

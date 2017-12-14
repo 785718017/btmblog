@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Constants;
 use Illuminate\Database\Eloquent\Model;
 
 class ArticleModel extends Model
@@ -53,7 +54,7 @@ class ArticleModel extends Model
      * 获取推荐的文章列表(即最新的5篇文章)
      */
     public function getRecommend(){
-        $articles = $this->orderBy('id', 'desc')->limit(5)->get();
+        $articles = $this->where('status',Constants::ARTICLE_ONLINE)->orderBy('id', 'desc')->limit(5)->get();
         if($articles->isEmpty()){
             return array();
         }
@@ -65,7 +66,7 @@ class ArticleModel extends Model
      * 获取阅读量最高的9篇文章
      */
     public function getHotNineArticles(){
-        $articles = $this->orderBy('browse_times', 'desc')->orderBy('id', 'desc')->limit(9)->get();
+        $articles = $this->where('status',Constants::ARTICLE_ONLINE)->orderBy('browse_times', 'desc')->orderBy('id', 'desc')->limit(9)->get();
         if($articles->isEmpty()){
             return array();
         }
@@ -111,5 +112,29 @@ class ArticleModel extends Model
             return array();
         }
         return $res;
+    }
+
+    /**
+     * 根据文章id数组获取文章
+     * @param $ids 文章id数组
+     */
+    public function getArticlesByIds($ids){
+        $articles = $this->whereIn('id',$ids)->get();
+        if($articles->isEmpty()){
+            return array();
+        }
+        return $articles;
+    }
+
+    /**
+     * 根据标签id获取文章
+     * @param $tag_id
+     */
+    public function getArticlesByTagId($tag_id){
+        $articles = $this->join('article_tags', 'article.id', '=', 'article_tags.article_id')->where('article_tags.tag_id',$tag_id)->where('article.status',Constants::ARTICLE_ONLINE)->orderBy('article.id','desc')->paginate(5);
+        if($articles->isEmpty()){
+            return array();
+        }
+        return $articles;
     }
 }

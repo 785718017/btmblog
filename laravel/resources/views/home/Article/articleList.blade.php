@@ -1,43 +1,6 @@
 @extends('home.Common.common')
 @section('style')
     <style>
-		.home_banner{ 
-            width: 100%;
-            height: 265px;
-            background: url("{{asset('/image/home/blog_banner.png')}}");
-            background-size: 100% 100%;
-        }
-        .home_banner .head_img_out_div{
-            width: 1030px;
-            margin: 0px auto;
-        }
-        .head_img{
-            width: 140px;
-            height: 140px;
-            border-radius: 100%;
-            background: url("{{asset('/image/home/headimg.jpg')}}");
-            background-size: 100% 100%;
-            position: relative;
-            left: 700px;
-            top: 70px;
-            cursor: pointer;
-            overflow: hidden;
-            border:solid #FFF 2px;
-        }
-        .myname{
-            width: 140px;
-            height: 70px;
-            line-height: 30px;
-            background-color: rgba(0, 0, 0, .5);
-            color: #FFF;
-            font-size: 16px;
-            text-align: center;
-            margin-top: 140px;
-        }
-        .about_a{
-            text-decoration: none;
-            outline: none;
-        }
         /*页面布局*/
         .home_main_content{
             width: 1100px;
@@ -69,6 +32,7 @@
             font-weight: bold;
             margin: 10px;
             letter-spacing: 3px;
+            padding-left: 20px;
         }
         .article_recommend_title_span{
             color: #db7878;
@@ -373,6 +337,51 @@
             font-weight: bold;
         }
         /*右侧边栏的样式结束*/
+
+        .title_tag{
+            font-size: 18px;
+        }
+        .no_article{
+            width: 100%;
+            height: 300px;
+            text-align: center;
+            line-height: 300px;
+        }
+        /*分页样式开始*/
+        .page{
+            width: 250px;
+            margin: 0px auto;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .page ul{
+            text-align: center;
+        }
+        .page ul li{
+            list-style: none;
+            text-decoration: none;
+            display: inline-block;         
+            border: solid #ccc 1px;
+            text-align: center;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            font-size: 14px;
+        }
+
+        .page ul li a{
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-decoration: none;
+            color: #666666;
+        }
+        .active{
+            background: #CCC;
+            color: #FFF;
+        }
+        /*分页样式结束*/
 	</style>
     @stop
 @section('style_src')
@@ -383,27 +392,18 @@
     <script type="text/javascript" src="{{asset('/plugin/handlebars-v3.0.3.min.js')}}"></script>
     @stop
 @section('common_content')
-    <!-- 首页banner -->
-    <div class='home_banner'>
-        <div class='head_img_out_div'>
-            <a href="About" target="_blank" class='about_a'>
-                <div class='head_img'>
-                    <!-- 显示名字的部分 -->
-                    <div class='myname'>
-                        半透明
-                    </div>
-                </div>
-            </a>
-            
-        </div>
-    </div>
     <!-- 首页主题内容区域 -->
-    <div class='home_main_content'>
+    <div class='home_main_content' tag_id="{{$tag->id}}">
         <!-- 文章推荐 -->
         <div class='article_recommend dib'>
-            <div class='article_recommend_title'>文章<span class='article_recommend_title_span'>推荐</span></div>
+            <div class='article_recommend_title'>
+                <a href="/Article/articleList/{{$tag->id}}"><div class='title_tag tag color_{{$tag->color}}'>{{$tag->name}}</div></a>
+            </div>
             <!-- 文章 -->
             <div class='article_div'>
+                
+            </div>
+            <div class='page'>
                 
             </div>
         </div>
@@ -467,7 +467,7 @@
                                             <span class='dib article_tag_img'></span>
                                                 {{#if tags}}
                                                     {{#each tags}}
-                                                    <a href="/Article/articleList/{{id}}" target="_blank"><div class='tag color_{{color}} {{#eq status 0}}ban{{/eq}}' data_id='{{id}}'>{{name}}</div></a>
+                                                    <a href="/Article/articleList/{{id}}"><div class='tag color_{{color}} {{#eq status 0}}ban{{/eq}}' data_id='{{id}}'>{{name}}</div></a>
                                                     {{/each}}                                                   
                                                 {{else}}                   
                                                     <span class='no_tags'>暂无标签</span>
@@ -517,12 +517,14 @@
                 }           
             }); 
             $(function(){
-                //获取推荐文章(最新的五篇文章)
-                $.post('/Article/getRecommend', null, function(data){
+                var tag_id = $('.home_main_content').attr('tag_id');
+                //获取该标签下的文章
+                $.post('/Article/getArticlesByTagId', {tag_id:tag_id}, function(data){
                     if(data.status){
-                        $('.article_div').html($('#article').template(data.info));
+                        $('.article_div').html($('#article').template(data.info.articles.data));
+                        $('.page').html(data.info.pages);
                     }else{
-                        layer.alert('获取文章失败，请刷新页面重试！', {icon : 6});
+                        $('.article_div').html('<div class="no_article">暂无文章！请去其它分类看看吧~</div>');
                     }
                 })
                 //获取热门标签
@@ -579,19 +581,25 @@
                                     layer.msg(data.info);
                                 }
                             })
-                       }
-                    },
-                    'mouseover' : {
-                        '.head_img' :  function(){
-                            $('.myname').stop(true);
-                            $('.myname').animate({marginTop:'100px'},200);
-                            // $('.myname').stop();
-                        }
-                    },
-                    'mouseout' : {
-                        '.head_img' :  function(){
-                            $('.myname').stop(true);
-                            $('.myname').animate({marginTop:'140px'});                  
+                       },
+                       '.page ul li a' : function(e){
+                            //处理分页的标签点击事件，阻止a标签，然后用ajax获取数据
+                            e.preventDefault();
+
+                            var tag_id = $('.home_main_content').attr('tag_id');
+                            var url = $(this).attr('href');
+                            url = url + '&tag_id='+tag_id;
+                            var params = getParams(url);                       
+                            
+                            //获取其它页的文章
+                            $.post('/Article/getArticlesByTagId', params, function(data){
+                                if(data.status){
+                                    $('.article_div').html($('#article').template(data.info.articles.data));
+                                    $('.page').html(data.info.pages);
+                                }else{
+                                    layer.msg('获取数据失败');
+                                }                           
+                            })
                         }
                     }
                 })

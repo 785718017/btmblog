@@ -84,35 +84,31 @@ Route::Group(['namespace' => 'Home'],function(){
 
         //获取点击量最多的9篇文章
         Route::post('getHotNineArticles' , 'ArticleController@getHotNineArticles');
-
         //展示文章页面
         Route::get('/{id}' , 'ArticleController@index');
-
         //根据文章id,获取文章的详细信息
         Route::post('getArticleDetail' , 'ArticleController@getArticleDetail');
-
-        //提交评论
-        Route::post('comment' , 'CommentController@comment');
-
         //获取文章的点赞、评论等信息
         Route::post('getArticleRelateInfo' , 'ArticleController@getArticleRelateInfo');
-
-        //回复评论
-        Route::post('replyForComment' , 'CommentController@replyForComment');
-
-        //回复评论的回复
-        Route::post('replyForReply' , 'CommentController@replyForReply');
-
         //点赞文章
         Route::post('addArticleAgree' , 'ArticleController@addArticleAgree');
         //点踩文章
         Route::post('addArticleDisagree' , 'ArticleController@addArticleDisagree');
+        //根据标签展示文章列表
+        Route::get('/articleList/{tag_id}' , 'ArticleController@articleList');
+        //根据标签id获取文章
+        Route::post('getArticlesByTagId' , 'ArticleController@getArticlesByTagId');
 
+        //提交评论
+        Route::post('comment' , 'CommentController@comment');
+        //回复评论
+        Route::post('replyForComment' , 'CommentController@replyForComment');
+        //回复评论的回复
+        Route::post('replyForReply' , 'CommentController@replyForReply');
         //点赞评论
         Route::post('addCommentAgree' , 'CommentController@addCommentAgree');
         //点踩评论
         Route::post('addCommentDisagree' , 'CommentController@addCommentDisagree');
-
     });
     Route::Group(['prefix' => 'Tags'],function(){
         //获取热门标签
