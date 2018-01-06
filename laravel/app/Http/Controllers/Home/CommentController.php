@@ -8,6 +8,7 @@ use App\Service\ReplyService;
 use App\Service\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Routing\Route;
 
 class CommentController extends Controller
 {
@@ -116,10 +117,6 @@ class CommentController extends Controller
 
         //判断评论是否属于该用户,判断评论是否被删除
         $comment = $commentService->getCommentById($comment_id);
-//        if($comment->user_id != $reply_for_uid){
-//            return $this->error('评论和用户信息不匹配');
-//        }
-
         if($comment->status == Constants::ARTICLE_COMMENT_STATUS_NOT_SHOW){
             return $this->error('该评论已关闭,请勿回复!');
         }

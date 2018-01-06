@@ -31,6 +31,8 @@ class Util
 
     /**
      * 公共函数,将数组中某个不重复的字段作为键名
+     * @param $array 数组
+     * @param $key 字段名
      */
     public static function array_convert($array, $key){
         $arr  = array();

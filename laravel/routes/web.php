@@ -10,10 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::post('Admin/Tags/getTags' , 'Admin\TagsController@getTags');
 
 //后台
-Route::Group(['namespace' => 'Admin' , 'prefix' => 'Admin'],function(){
+Route::Group(['namespace' => 'Admin' , 'prefix' => 'Admin', 'middleware' => ['check_auth']],function(){
     //后台首页
     Route::get('/' , 'AdminController@index');
 
@@ -48,8 +47,6 @@ Route::Group(['namespace' => 'Admin' , 'prefix' => 'Admin'],function(){
     Route::Group(['prefix' => 'Tags'],function(){
         //显示页面
         Route::get('index' , 'TagsController@index');
-        //获取所有标签
-
         //添加标签
         Route::post('addTag' , 'TagsController@addTag');
         //修改标签
@@ -62,16 +59,48 @@ Route::Group(['namespace' => 'Admin' , 'prefix' => 'Admin'],function(){
         Route::post('getTagById' , 'TagsController@getTagById');
         //获取可用的顶级标签
         Route::post('getTopLevelTags' , 'TagsController@getTopLevelTags');
+
+        //获取所有标签
+        Route::post('getTags' , 'TagsController@getTags');
+    });
+    //权限
+    Route::Group(['prefix' => 'Auth'],function(){
+        //获取该权限下的子权限列表
+        Route::get('/{id?}' , 'AuthController@index');
+        //添加权限页面
+        Route::get('addChildAuth/{id}' , 'AuthController@addChildAuth');
+        //添加权限
+        Route::post('addAuth' , 'AuthController@addAuth');
+
+        //获取所有子权限
+        Route::post('getChildAuths' , 'AuthController@getChildAuths');
+        //禁用权限
+
+        //用户组权限页面
+        Route::get('groupAuth' , 'AuthController@groupAuth');
+        //更新用户组权限
+        Route::post('updateGroupAuth' , 'AuthController@updateGroupAuth');
+        //获取用户组所有权限
+        Route::post('getGroupAuths' , 'AuthController@getGroupAuths');
+
+    });
+
+    //用户
+    Route::Group(['prefix' => 'User'],function(){
+        //用户组列表页面
+        Route::get('groupList' , 'UserController@groupList');
+        //用户组权限页面
+        Route::get('groupAuth/{id}' , 'UserController@groupAuth');
+        //获取所有的用户组
+        Route::post('getAllGroups' , 'UserController@getAllGroups');
+
     });
 });
 
-Route::post('/login_out', function (\Illuminate\Http\Request $request){
-    $request->session()->flush();
-    return 1;
-});
+
 
 //前台
-Route::Group(['namespace' => 'Home'],function(){
+Route::Group(['namespace' => 'Home','middleware' => ['check_auth']],function(){
     //前台首页
     Route::get('/' , 'IndexController@index');
 
@@ -113,13 +142,20 @@ Route::Group(['namespace' => 'Home'],function(){
     Route::Group(['prefix' => 'Tags'],function(){
         //获取热门标签
         Route::post('getHotTags' , 'TagsController@getHotTags');
-
-
+    });
+    Route::Group(['prefix' => 'Message'],function(){
+        //展示留言页面
+        Route::get('/' , 'MessageController@index');
+        //添加留言
+        Route::post('addMessage' , 'MessageController@addMessage');
+        //获取更多留言
+        Route::post('getMoreMessage' , 'MessageController@getMoreMessage');
+        //添加留言评论
+        Route::post('replyForMessage' , 'MessageController@replyForMessage');
+        //添加留言评论的评论
+        Route::post('replyForReply' , 'MessageController@replyForReply');
     });
 
-
-    //注册页面
-    Route::get('/regist' , 'UserController@regist')->middleware('CheckLogin');
     //用户组
     Route::Group(['prefix' => 'User'],function (){
         //检验用户名是否存在
@@ -134,4 +170,12 @@ Route::Group(['namespace' => 'Home'],function(){
     Route::get('/successNotify/{info}/{time}' ,'Notify@successNotify');
     //前台公共失败提示页面
     Route::get('/failNotify/{info}/{time}' ,'Notify@failNotify');
+    //注册页面
+    Route::get('/regist' , 'UserController@regist')->middleware('CheckLogin');
+});
+
+// 注销
+Route::post('/login_out', function (\Illuminate\Http\Request $request){
+    $request->session()->flush();
+    return 1;
 });

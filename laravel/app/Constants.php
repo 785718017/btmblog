@@ -79,6 +79,28 @@ class Constants{
      * 操作类型--1.点踩
      */
     const AGREE_TYPE_DISAGREE = 2;
+
+    /**
+     * 留言的状态--可见
+     */
+    const MESSAGE_STATUS_ENABLE = 1;
+    /**
+     * 留言的状态--不可见
+     */
+    const MESSAGE_STATUS_UNENABLE = 2;
+    /**
+     * 留言回复的状态--可见
+     */
+    const MESSAGE_REPLY_STATUS_ENABLE = 1;
+    /**
+     * 留言回复的状态--不可见
+     */
+    const MESSAGE_REPLY_STATUS_UNENABLE = 2;
+
+    /**
+     * 用户分组--普通用户
+     */
+    const USER_GROUP_NORMAL = 2;
 }
 
 

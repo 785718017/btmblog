@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Constants;
+use App\Model\GroupUserModel;
 use App\Model\UserModel;
 
 class UserService extends CommonService
@@ -52,5 +53,36 @@ class UserService extends CommonService
         $UserModel = new UserModel();
         $user = $UserModel->getUserById($user_id);
         return $user;
+    }
+
+    /**
+     * 根据用户id数组获取用户的信息
+     * @param $user_ids 用户id数组
+     */
+    public function getUserByUids($user_ids){
+        $UserModel = new UserModel();
+        $user = $UserModel->getUserByIds($user_ids);
+        return $user;
+    }
+
+    /**
+     * 添加用户的用户分组
+     * @param $uid
+     * @param $group_id
+     */
+    public function addUserGroup($uid, $group_id){
+        $GroupUserModel = new GroupUserModel();
+        $group = $GroupUserModel->addUserGroup($uid, $group_id);
+        return $group;
+    }
+
+    /**
+     * 根据用户id获取用户组
+     * @param $uid用户id
+     */
+    public function getUserGroupsByUid($uid){
+        $GroupUserModel = new GroupUserModel();
+        $user_groups = $GroupUserModel->getUserGroupsByUid($uid);
+        return $user_groups;
     }
 }

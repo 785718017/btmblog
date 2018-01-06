@@ -79,6 +79,11 @@ class UserController extends Controller
         if(empty($user_id)){
             return $this->error('注册失败!');
         }
+        //添加用户组信息(默认为普通用户)
+        $group = $userService->addUserGroup($user_id, Constants::USER_GROUP_NORMAL);
+        if(!$group){
+            return $this->error('添加用户组信息失败');
+        }
         //自动登录
         //将用户信息存入session
         $user_info = array();

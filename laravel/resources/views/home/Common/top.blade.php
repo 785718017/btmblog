@@ -8,6 +8,6 @@
 			<a href="/Article/articleList/2" class='dib'><span class='dib common_nav_list'>数据处理</span><div class='small_nav hide'>data</div></a>
 			<a href="/Article/articleList/14" class='dib'><span class='dib common_nav_list'>其它学习</span><div class='small_nav hide'>other</div></a>
 			<a href="/Article/articleList/18" class='dib'><span class='dib common_nav_list'>随笔</span><div class='small_nav hide'>dream</div></a>
-			<a href="" class='dib'><span class='dib common_nav_list'>留言</span><div class='small_nav hide'>message</div></a>
+			<a href="/Message" class='dib'><span class='dib common_nav_list'>留言</span><div class='small_nav hide'>message</div></a>
 		</div>
 	</div>

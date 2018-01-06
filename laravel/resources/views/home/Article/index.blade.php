@@ -811,23 +811,15 @@
                         $.post('/Article/comment', params, function(data){
                             if(data.status){
                                 //重置评论输入框的内容
-                                ue.setContent('');
-                                //将用户添加的评论放在评论列表中的第一条
-                                var data = data.info;
-
+                                ue.setContent('');                               
                                 layer.msg('评论成功！');
-
+                                //刷新页面
+                                window.location.reload();
                             }else{
                                 layer.msg(data.info);
                             }
                         })
-                    },
-                    '.login_out_btn' : function(){
-                        //注销
-                        $.post('/login_out', null, function(data){
-                            window.location.reload();                         
-                        })
-                    },
+                    },                    
                     '.user_info_area_btn' : function(){
                         var user_id = $('.user_info_box_id').attr('user_id');                       
                         if(user_id != ''){

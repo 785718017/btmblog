@@ -49,7 +49,9 @@ class CommentService extends CommonService
 
         $ArticleCommentModel = new ArticleCommentModel();
         $res = $ArticleCommentModel->addComment($uid, $article_id, $comment, $email, $time);
-
+        if(empty($res)){
+            return array();
+        }
         //将评论加入消息队列,推送给我自己
 
 

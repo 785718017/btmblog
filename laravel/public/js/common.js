@@ -94,7 +94,13 @@ $(function(){
 			},
 			'.change_method_wb' : function(){
 				layer.msg('暂不支持微博登录');
-			}
+			},
+			'.login_out_btn' : function(){
+                //注销
+                $.post('/login_out', null, function(data){
+                    window.location.reload();                         
+                })
+            }
 		}
 	})
 
@@ -107,5 +113,32 @@ $(function(){
             return options.inverse(this);
         }           
     });
+
+    // 没有权限或session过期时
+	$(document).ajaxSuccess(function(event, request, settings){
+		if(request.responseText == ''){
+			return;
+		} 
+		// 数据
+		var data = null;
+		// 调用者是否是ajaxfileupload.js文件		
+		data = JSON.parse(request.responseText);
+		if(typeof(data) == 'undefined'){
+			return;
+		}
+		if(typeof(data.status) == 'undefined'){
+			return;
+		}
+		if(data.status == 2){
+			// 没有权限
+			layer.alert(data.info);
+			return;
+		}
+	});
+	// ajax出错时的处理
+	$(document).ajaxError(function(event, request, settings){
+		console.log(settings.content + settings.url);
+		layer.msg('网络异常！');
+	});
 
 })
