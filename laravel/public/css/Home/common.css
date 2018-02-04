@@ -92,6 +92,10 @@ body{
 	text-align: center;
 	background: #F1F0EE;
 }
+.common_bottom_content a{
+	color: #666666;
+	text-decoration: none;
+}
 /*/*公共底部样式结束*/
 
 /*公共登录窗口样式开始*/

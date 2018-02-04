@@ -1,6 +1,105 @@
-@extends('home.Common.common')
-@section('style')
-    <style>    
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>文章-半透明的博客</title>
+        <meta charset="utf-8">
+        <link rel="icon" type="image/x-icon" href="http://www.btmblog.com/image/little_icon.png" />
+        <link rel="stylesheet" type="text/css" href="http://www.btmblog.com/css/Home/common.css" />
+        <style type="text/css">
+            *{               
+                margin: 0px;
+                padding: 0px;
+            }
+            body{
+                font-family: "Microsoft Yahei","Hiragino Sans GB","Helvetica Neue","WenQuanYi Micro Hei","\5B8B\4F53";
+            }
+
+            /*用户个人信息弹出框开始*/
+            .user_info_box_id{
+                overflow: hidden;
+            }
+            .user_info_box .user_head{
+                display: inline-block;
+                width: 70px;
+                height: 70px;
+                background-color: #f6ce5b;
+                font-weight: bold;
+                font-size: 14px;
+                color: #FFF;
+                border-radius: 35px;
+                border: solid #ccc 1px;
+                float: left;
+                margin-left: 15px;
+                margin-top: 15px;
+                background-size: 70px 70px;
+            }
+            .user_name_history_reply{
+                display: inline-block;
+                width: 142px;
+                height: 70px;
+                float: right;
+                margin-right: 15px;
+                margin-top: 15px;
+                overflow: hidden;
+            }
+            .user_nick_name{
+                display: inline-block;
+                width: 142px;
+                height: 30px;
+                line-height: 30px;
+                font-size: 14px;
+                overflow: hidden;
+                text-overflow:ellipsis;
+                white-space: nowrap;
+                color: #666666;
+                float: left;
+            }
+            .user_profile{
+                display: inline-block;
+                width: 100px;
+                text-align: center;
+                height: 30px;
+                line-height: 30px;
+                text-decoration: none;
+                margin-top: 20px;
+                margin-left: 15px;
+                background: #f5ce5f;
+                color: #FFF;
+                border-radius: 10px;
+                cursor: pointer;
+            }
+
+            .login_out_btn{
+                display: inline-block;
+                width: 100px;
+                text-align: center;
+                height: 30px;
+                line-height: 30px;
+                background: #ccc;
+                color: #FFF;
+                border-radius: 10px;
+                cursor: pointer;
+                margin-left: 10px;
+            }
+            .view_history_a,.my_reply_a{
+                display: inline-block;
+                width: 142px;
+                height: 20px;
+                line-height: 20px;
+                font-size: 10px;
+                overflow: hidden;
+                text-overflow:ellipsis;
+                white-space: nowrap;
+                color: #666666;
+                float: left;
+                text-decoration: none;
+            }
+            .home_main_content{
+                padding-bottom: 40px;
+            }
+            /*用户个人信息弹出框结束*/
+        </style>
+            <style>    
         .home_main_content{
             width: 1140px;
             margin:0px auto;
@@ -55,7 +154,7 @@
         .author_img{
             width: 21px;
             height: 21px;
-            background:url("{{asset('/image/home/icons.png')}}");
+            background:url("http://www.btmblog.com/image/home/icons.png");
             background-size:63px 63px;
             background-repeat: no-repeat;
             background-position: -21px 0px;
@@ -81,7 +180,7 @@
         .time_img{
             width: 21px;
             height: 21px;
-            background:url("{{asset('/image/home/icons.png')}}");
+            background:url("http://www.btmblog.com/image/home/icons.png");
             background-size:63px 63px;
             background-repeat: no-repeat;
             background-position: 0px 0px;
@@ -99,7 +198,7 @@
         .article_tag_img{
             width: 21px;
             height: 21px;
-            background:url("{{asset('/image/home/icons.png')}}");
+            background:url("http://www.btmblog.com/image/home/icons.png");
             background-size:63px 63px;
             background-repeat: no-repeat;
             background-position: -42px 0px;
@@ -146,7 +245,7 @@
         .agree_img{
             width: 28px;
             height: 28px;
-            background:url("{{asset('/image/home/icons.png')}}");
+            background:url("http://www.btmblog.com/image/home/icons.png");
             background-size:84px 84px;
             background-repeat: no-repeat;
             background-position: -28px -28px;
@@ -180,7 +279,7 @@
         .disagree_img{
             width: 28px;
             height: 28px;
-            background:url("{{asset('/image/home/icons.png')}}");
+            background:url("http://www.btmblog.com/image/home/icons.png");
             background-size:84px 84px;
             background-repeat: no-repeat;
             background-position: -56px -28px;
@@ -333,7 +432,7 @@
         .comment_agree_img{
             width: 16px;
             height: 16px;
-            background-image: url("{{asset('/image/home/icons.png')}}");
+            background-image: url("http://www.btmblog.com/image/home/icons.png");
             background-size: 48px 48px;
             background-position: -16px -16px;
             margin-left: 10px;
@@ -347,7 +446,7 @@
         .comment_disagree_img{
             width: 16px;
             height: 16px;
-            background-image: url("{{asset('/image/home/icons.png')}}");
+            background-image: url("http://www.btmblog.com/image/home/icons.png");
             background-size: 48px 48px;
             background-position: -32px -16px;
         }
@@ -563,49 +662,70 @@
         }
         /*没有评论时样式结束*/
 	</style>
-    @stop
-@section('style_src')
+                    
+            <script type="text/javascript" src="http://www.btmblog.com/js/jquery-1.8.3.min.js"></script>
+        <script type="text/javascript" src="http://www.btmblog.com/js/common.js"></script>
+        <script type="text/javascript" src="http://www.btmblog.com/js/md5.js"></script>
+        <script type="text/javascript" src="http://www.btmblog.com/plugin/layer-v3.1.0/layer/layer.js"></script>
+        <script type="text/javascript" src="http://www.btmblog.com/plugin/handlebars-v3.0.3.min.js"></script>
+            <script type="text/javascript" src="http://www.btmblog.com/plugin/layer-v3.1.0/layer/layer.js"></script>
+    <script type="text/javascript" src="http://www.btmblog.com/plugin/handlebars-v3.0.3.min.js"></script>   
+    <script type="text/javascript" src="http://www.btmblog.com/plugin/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="http://www.btmblog.com/plugin/ueditor/ueditor.all.js"></script>
+    <script type="text/javascript" src="http://www.btmblog.com/plugin/ueditor/ueditor.parse.js"></script>
+        </head>
+    <body>
         
-    @stop
-@section('script_src')
-    <script type="text/javascript" src="{{asset('/plugin/layer-v3.1.0/layer/layer.js')}}"></script>
-    <script type="text/javascript" src="{{asset('/plugin/handlebars-v3.0.3.min.js')}}"></script>   
-    <script type="text/javascript" src="{{asset('/plugin/ueditor/ueditor.config.js')}}"></script>
-    <script type="text/javascript" src="{{asset('/plugin/ueditor/ueditor.all.js')}}"></script>
-    <script type="text/javascript" src="{{asset('/plugin/ueditor/ueditor.parse.js')}}"></script>
-    @stop
-@section('common_content')
-    <div class='home_main_content' article_id="{{$id}}">
+        <div class='common_top'>
+            
+            <!-- 公共导航栏 -->
+	<div class='common_nav'>
+		<a href="/"><div class='home_img dib'></div></a>
+		<div class='common_nav_box dib'>
+			<a href="/" class='dib'><span class='dib common_nav_list'>首页</span><div class='small_nav hide'>home</div></a>
+			<a href="/Article/articleList/1" class='dib'><span class='dib common_nav_list'>编程语言</span><div class='small_nav hide'>language</div></a>
+			<a href="/Article/articleList/3" class='dib'><span class='dib common_nav_list'>web前端</span><div class='small_nav hide'>vision</div></a>
+			<a href="/Article/articleList/2" class='dib'><span class='dib common_nav_list'>数据处理</span><div class='small_nav hide'>data</div></a>
+			<a href="/Article/articleList/14" class='dib'><span class='dib common_nav_list'>其它学习</span><div class='small_nav hide'>other</div></a>
+			<a href="/Article/articleList/18" class='dib'><span class='dib common_nav_list'>随笔</span><div class='small_nav hide'>dream</div></a>
+			<a href="/Message" class='dib'><span class='dib common_nav_list'>留言</span><div class='small_nav hide'>message</div></a>
+		</div>
+	</div>        </div>
+        <div class='common_body'>
+            <div class='background'>
+            
+                <div class='home_main_content' article_id="15">
         <!-- 左边显示文章内容，右边显示评论和点赞等操作 -->
         <div class='article_left_box'>
             <div class='article_show_div'>
                 <div class='article_title'>
-                    {{$article->name}}
+                    别再到处搜php类扩展包了；进入composer的时代吧
                 </div>
                 <div class='author_time_tags'>
                     <!-- 作者 -->
                     <span class='author_span dib' title='作者'> 
-                        <span class='dib author_img'></span><span class='author_name'>{{$article->author}}</span>
+                        <span class='dib author_img'></span><span class='author_name'>半透明</span>
                     </span>
                     <!-- 时间 -->
                     <span class='time_span dib' title='发布时间'>
-                        <span class='dib time_img'></span><span class='article_time'>{{$article->publish_time}}</span>
+                        <span class='dib time_img'></span><span class='article_time'>2017-11-12 11:08:04</span>
                     </span>
                     <!-- 标签 -->
                     <span class='dib article_tag'>
                         <span class='dib article_tag_img'></span>
-                        @if (isset($article->tags)) 
-                            @foreach ($article->tags as $tag)
-                                <a href="/Article/articleList/{{$tag->id}}" class='tag_a'><div class='tag color_{{$tag->color}} 
-                                @if($tag->status == 0)ban @endif' data_id='{{$tag->id}}'>{{$tag->name}}</div></a>
-                            @endforeach                                                 
-                        @else                  
-                            <span class='no_tags'>暂无标签</span>
-                        @endif 
+                         
+                                                            <a href="/Article/articleList/11" class='tag_a'><div class='tag color_3 
+                                ' data_id='11'>php</div></a>
+                                                            <a href="/Article/articleList/14" class='tag_a'><div class='tag color_1 
+                                ' data_id='14'>其它学习</div></a>
+                                                            <a href="/Article/articleList/15" class='tag_a'><div class='tag color_2 
+                                ' data_id='15'>laravel</div></a>
+                                                                             
+                         
                     </span>
                 </div>
                 <div class='article_content'>
-                    {!! $article->content !!}
+                    <p>这是一篇为下周的文章做铺垫的文章；<br/>本来是要写另一篇文章的；<br/>结果发现；<br/>我似乎需要先把composer讲解下；</p><p>抛开需求场景讲技术的都是耍流氓；<br/>那么咱就先来讲讲composer是个什么东西；<br/>它解决了什么样的需求;</p><p>在远古时代；<br/>我们开发的时候；<br/>除了面向oop编程；<br/>更多的都是面向搜索引擎编程；</p><p>举个栗子；<br/>比如说咱想实现个验证码功能；<br/>如果不重复造轮子的话；<br/>那就是直接拿着卖假药的搜个php验证码类；<br/>点击前几个；然后复制或者下载下来；<br/>编辑编辑根据项目加个命名空间；<br/>然后在自己的项目中include一下；<br/>就这么愉快的跑起来了；</p><p>然后这个验证码的后续升级维护？<br/>嗯哼？还想升级维护？<br/>这基本只能靠祈祷；<br/>祈祷不行就自己动手解决吧；</p><p>运气好的；<br/>有在github上开源的；<br/>那还能点个watch;<br/>看到有bug修复或新版本发布；<br/>能及时跟着升级；</p><p>但是又觉得每次都自己手动点击下载太麻烦；<br/>下载的扩展包多了；<br/>需要各种include；<br/>还可能存在命名空间重复冲突的问题；<br/>这又要根据项目修改命名空间；<br/>如果扩展包升级了；<br/>还要重新下载编辑；<br/>作为勤(lan)奋(duo)的程序猿；<br/>这怎么可以忍；<br/>那可不可以有一种工具；<br/>能至少先满足咱这篇文章所说的问题呢？</p><p>其他语言；<br/>比如说python的pip；<br/>node.js的npm；<br/>都可以很好的满足这样的需求；<br/>然鹅；<br/>作为世界上最好的语言；<br/>php竟然一直没有个好的包管理工具；<br/>直到composer的诞生；<br/>给中文网的链接了解下；<br/><a href="http://www.phpcomposer.com" target="_blank">http://www.phpcomposer.com</a></p><p>没错；<br/>上面这些就是composer比较重要的需求场景；</p><ol class=" list-paddingleft-2"><li><p>能方便的安装升级扩展包；</p></li><li><p>只include就行；别到处写include；</p></li><li><p>避免命名空间的冲突；</p></li></ol><p>既然安装使用可以了；<br/>那搜扩展包也得有个优雅点的方式吧；<br/>总不能每次找个扩展包；<br/>都还需要在github、码云、等等各种国内外的的平台上找吧<br/>那这还得来个网站把各个平台的包综合起来吧；<br/>网站说来就来；<br/><a href="https://packagist.org" target="_blank">https://packagist.org</a></p><p>敲黑板；<br/>画重点了；<br/>也就说现在的开发方式；<br/>首先在packagist上搜索；<br/>然后用composer安装升级；</p><p>搜索我想不用我讲吧；<br/>composer的使用；<br/>我觉得还是需要再开一篇详细写了；<br/>还没用composer可以根据上面的中文文档链接；<br/>先自行预习使用；<br/>自行搞不定的；等我下篇文章；<br/>我就先睡了；<br/>这时间太不靠谱；<br/>每次我写写文章；完善完善；<br/>它就凌晨1点多了；</p><p><img src="/article_images/20171112/1510484850156747.jpg" title="1510484850156747.jpg" alt="11.jpg"/></p><p>本文转载自<a href="http://baijunyao.com">白俊遥博客</a>https://baijunyao.com<br/></p>
                 </div>
             </div>
         </div>
@@ -613,7 +733,9 @@
         <div class='article_right_box'>
             <div class='agree_login_div'>
                 <div class='agree_div'>
-                    <div class='agree_left_div'></div>
+                    <div class='agree_left_div'>
+                       
+                    </div>
                 </div>
                 <div class='user_info_div dib'>
                     
@@ -635,9 +757,79 @@
             <div class='page'></div>
         </div>
     </div>
-    @stop
-@section('script')
-    @verbatim
+                </div>
+        </div>
+        <div class='common_bottom'>
+            <div class='common_bottom_content'>
+	<a href="http://www.miitbeian.gov.cn" target="_blank">ICP：皖ICP备18001809号</a>
+</div>        </div>
+        <!-- 公共登录弹窗 -->
+        <div class='commen_login_div hide'>
+            <!-- 账号密码登录-暂时先用，等有了微信登陆之后，去掉这个功能，或者改为微信的账号密码登录 -->
+            <div class='login_by_input'>
+                <div class="login_user_name_div">
+                    <span >用户名：</span>
+                    <input type="text" class='user_name' />
+                </div>
+                <div class="login_user_password_div">
+                    <span>密&nbsp;&nbsp;&nbsp;码：</span>
+                    <input type="password" class='password' />
+                </div>
+                <div>
+                    <span class='common_login_btn'>登录</span>
+                </div>
+                <div class='no_account_regist_div'>
+                    <span>没有账号？<a href='/regist' target="_blank">注册</a></span>
+                </div>
+            </div>
+            <!-- 微信扫码登录 -->
+            <div class='login_by_wx hide'>
+                <!-- 放二维码的div -->
+                <div>
+                    
+                </div>
+            </div>
+
+            <div class='change_login_method'>
+                <span class='change_method_wx'>微信登录</span>
+                <span class='change_method_wb'>微博登录</span>
+            </div>
+        </div>
+
+        <!-- 公共个人信息展示窗 -->
+        <div class='user_info_box hide'>
+            
+        </div>
+    </body>
+    
+        <script  id="user_info_box_tmp" type="text/x-handlebars-template">
+            <div class='user_info_box_id' user_id="{{uid}}">
+                <!-- 头像 -->
+                <span class='user_head'
+                    {{#eq head 0}}
+                        style="background-image: url('http://www.btmblog.com/image/home/default_head.jpg');"
+                    {{else}}
+                        style="background-image: url('http://www.btmblog.com/image/home/headimg.jpg');"
+                    {{/eq}} 
+                ></span>
+                  
+                <div class='user_name_history_reply'>
+                    <!-- 昵称 -->
+                    <span class='user_nick_name' title="{{nick_name}}">{{nick_name}}</span> 
+                    <!-- 浏览历史 -->
+                    <a class='view_history_a' href='/User/viewHistory' target="_blank">阅读历史：12345</a>
+                    <!-- 查看回复 -->
+                    <a class='my_reply_a' href="/User/replyRecord" target="_blank">收到回复：123</a>
+                </div>
+                            
+            </div>
+            <div>
+                <a href="/User/profile" class='user_profile' target="_blank">个人中心</a>
+                <span class='login_out_btn'>注销</span>
+            </div>
+        </script>
+        
+        
     <script  id="article_info" type="text/x-handlebars-template">
          <!-- 作者 -->
         <span class='author_span dib' title='作者'> 
@@ -754,11 +946,11 @@
         {{/eq}}
     </script>
     
-    @endverbatim
+    
     <script type="text/javascript">
         $(function(){
             //解析文章内容
-            uParse('.article_content', {rootPath : "{{asset('/plugin/ueditor')}}"});
+            uParse('.article_content', {rootPath : "http://www.btmblog.com/plugin/ueditor"});
 
             var id = $('.home_main_content').attr('article_id');
 
@@ -1116,4 +1308,4 @@
             })          
         })
     </script>
-    @stop
+    </html>

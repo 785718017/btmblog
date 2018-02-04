@@ -15,7 +15,22 @@ class UserController extends Controller
      * 显示博主个人简介
      */
     public function about(){
-        return view('home/User/about',['page_title'=>'关于我']);
+        $url = public_path('static/home/User/about.html');
+        if(file_exists($url)){
+            // 读取文件内容
+            $res = fopen($url, 'r');
+            $html = fread($res, filesize($url));
+            return $html;
+        }else{
+            $data = view('home/User/about',['page_title'=>'关于我'])->render();
+            // 要不要把静态文件的二进制数据存在memcache中
+            $res = $this->createOrUpdateDirAndFile($url, $data);
+            if(!$res){
+                // 将生成该页面的任务丢进消息队列
+
+            }
+            return $data;
+        }
     }
 
     /**
@@ -137,4 +152,23 @@ class UserController extends Controller
 
     }
 
+    /**
+     * 获取用户信息
+     */
+    public function getUserInfo(){
+        $uid = session('uid');
+        $head = session('head');
+        $nick_name = session('nick_name');
+
+        $uid = empty($uid) ? 0 : $uid;
+        $head = empty($head) ? 0 : $head;
+        $nick_name = empty($nick_name) ? 0 : $nick_name;
+
+        $data = [
+            'uid' => $uid,
+            'head' => $head,
+            'nick_name' => $nick_name
+        ];
+        return $this->success($data);
+    }
 }

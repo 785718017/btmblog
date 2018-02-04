@@ -85,4 +85,34 @@ class Controller extends BaseController
         }
         return $data;
     }
+
+    /**
+     * 根据文件的url,创建文件夹以及文件
+     * @param $url 文件的url
+     * @param $data 要写入文件的内容
+     */
+    public function createOrUpdateDirAndFile($url, $data){
+        // 将url分称文件夹和文件
+        $url_params = explode('/', $url);
+        array_pop($url_params);
+        $dir_path = implode('/', $url_params);
+
+        // 判断文件夹是否存在,如果不在则递归创建文件夹
+        if(!is_dir($dir_path)){
+            if(!mkdir($dir_path, 0777, true)){
+                return false;
+            }
+        }
+        // 创建文件
+        $res = fopen($url, 'w');
+        if($res === false){
+            return false;
+        }
+        $write = fwrite($res, $data);
+        if($write === false){
+            return false;
+        }
+        fclose($res);
+        return true;
+    }
 }

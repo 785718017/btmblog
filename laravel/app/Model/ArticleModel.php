@@ -137,4 +137,16 @@ class ArticleModel extends Model
         }
         return $articles;
     }
+
+    /**
+     * 获取文章的点赞和点踩数量
+     * @param $id文章id
+     */
+    public function getArticleAgreeNum($id){
+        $articles = $this->select('id','agree_num','disagree_num')->where('id', $id)->first();
+        if(empty($articles)){
+            return array();
+        }
+        return $articles;
+    }
 }

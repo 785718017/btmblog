@@ -1,6 +1,105 @@
-@extends('home.Common.common')
-@section('style')
-    <style>    
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>文章-半透明的博客</title>
+        <meta charset="utf-8">
+        <link rel="icon" type="image/x-icon" href="http://www.btmblog.com/image/little_icon.png" />
+        <link rel="stylesheet" type="text/css" href="http://www.btmblog.com/css/Home/common.css" />
+        <style type="text/css">
+            *{               
+                margin: 0px;
+                padding: 0px;
+            }
+            body{
+                font-family: "Microsoft Yahei","Hiragino Sans GB","Helvetica Neue","WenQuanYi Micro Hei","\5B8B\4F53";
+            }
+
+            /*用户个人信息弹出框开始*/
+            .user_info_box_id{
+                overflow: hidden;
+            }
+            .user_info_box .user_head{
+                display: inline-block;
+                width: 70px;
+                height: 70px;
+                background-color: #f6ce5b;
+                font-weight: bold;
+                font-size: 14px;
+                color: #FFF;
+                border-radius: 35px;
+                border: solid #ccc 1px;
+                float: left;
+                margin-left: 15px;
+                margin-top: 15px;
+                background-size: 70px 70px;
+            }
+            .user_name_history_reply{
+                display: inline-block;
+                width: 142px;
+                height: 70px;
+                float: right;
+                margin-right: 15px;
+                margin-top: 15px;
+                overflow: hidden;
+            }
+            .user_nick_name{
+                display: inline-block;
+                width: 142px;
+                height: 30px;
+                line-height: 30px;
+                font-size: 14px;
+                overflow: hidden;
+                text-overflow:ellipsis;
+                white-space: nowrap;
+                color: #666666;
+                float: left;
+            }
+            .user_profile{
+                display: inline-block;
+                width: 100px;
+                text-align: center;
+                height: 30px;
+                line-height: 30px;
+                text-decoration: none;
+                margin-top: 20px;
+                margin-left: 15px;
+                background: #f5ce5f;
+                color: #FFF;
+                border-radius: 10px;
+                cursor: pointer;
+            }
+
+            .login_out_btn{
+                display: inline-block;
+                width: 100px;
+                text-align: center;
+                height: 30px;
+                line-height: 30px;
+                background: #ccc;
+                color: #FFF;
+                border-radius: 10px;
+                cursor: pointer;
+                margin-left: 10px;
+            }
+            .view_history_a,.my_reply_a{
+                display: inline-block;
+                width: 142px;
+                height: 20px;
+                line-height: 20px;
+                font-size: 10px;
+                overflow: hidden;
+                text-overflow:ellipsis;
+                white-space: nowrap;
+                color: #666666;
+                float: left;
+                text-decoration: none;
+            }
+            .home_main_content{
+                padding-bottom: 40px;
+            }
+            /*用户个人信息弹出框结束*/
+        </style>
+            <style>    
         .home_main_content{
             width: 1140px;
             margin:0px auto;
@@ -55,7 +154,7 @@
         .author_img{
             width: 21px;
             height: 21px;
-            background:url("{{asset('/image/home/icons.png')}}");
+            background:url("http://www.btmblog.com/image/home/icons.png");
             background-size:63px 63px;
             background-repeat: no-repeat;
             background-position: -21px 0px;
@@ -81,7 +180,7 @@
         .time_img{
             width: 21px;
             height: 21px;
-            background:url("{{asset('/image/home/icons.png')}}");
+            background:url("http://www.btmblog.com/image/home/icons.png");
             background-size:63px 63px;
             background-repeat: no-repeat;
             background-position: 0px 0px;
@@ -99,7 +198,7 @@
         .article_tag_img{
             width: 21px;
             height: 21px;
-            background:url("{{asset('/image/home/icons.png')}}");
+            background:url("http://www.btmblog.com/image/home/icons.png");
             background-size:63px 63px;
             background-repeat: no-repeat;
             background-position: -42px 0px;
@@ -146,7 +245,7 @@
         .agree_img{
             width: 28px;
             height: 28px;
-            background:url("{{asset('/image/home/icons.png')}}");
+            background:url("http://www.btmblog.com/image/home/icons.png");
             background-size:84px 84px;
             background-repeat: no-repeat;
             background-position: -28px -28px;
@@ -180,7 +279,7 @@
         .disagree_img{
             width: 28px;
             height: 28px;
-            background:url("{{asset('/image/home/icons.png')}}");
+            background:url("http://www.btmblog.com/image/home/icons.png");
             background-size:84px 84px;
             background-repeat: no-repeat;
             background-position: -56px -28px;
@@ -333,7 +432,7 @@
         .comment_agree_img{
             width: 16px;
             height: 16px;
-            background-image: url("{{asset('/image/home/icons.png')}}");
+            background-image: url("http://www.btmblog.com/image/home/icons.png");
             background-size: 48px 48px;
             background-position: -16px -16px;
             margin-left: 10px;
@@ -347,7 +446,7 @@
         .comment_disagree_img{
             width: 16px;
             height: 16px;
-            background-image: url("{{asset('/image/home/icons.png')}}");
+            background-image: url("http://www.btmblog.com/image/home/icons.png");
             background-size: 48px 48px;
             background-position: -32px -16px;
         }
@@ -563,49 +662,107 @@
         }
         /*没有评论时样式结束*/
 	</style>
-    @stop
-@section('style_src')
+                    
+            <script type="text/javascript" src="http://www.btmblog.com/js/jquery-1.8.3.min.js"></script>
+        <script type="text/javascript" src="http://www.btmblog.com/js/common.js"></script>
+        <script type="text/javascript" src="http://www.btmblog.com/js/md5.js"></script>
+        <script type="text/javascript" src="http://www.btmblog.com/plugin/layer-v3.1.0/layer/layer.js"></script>
+        <script type="text/javascript" src="http://www.btmblog.com/plugin/handlebars-v3.0.3.min.js"></script>
+            <script type="text/javascript" src="http://www.btmblog.com/plugin/layer-v3.1.0/layer/layer.js"></script>
+    <script type="text/javascript" src="http://www.btmblog.com/plugin/handlebars-v3.0.3.min.js"></script>   
+    <script type="text/javascript" src="http://www.btmblog.com/plugin/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="http://www.btmblog.com/plugin/ueditor/ueditor.all.js"></script>
+    <script type="text/javascript" src="http://www.btmblog.com/plugin/ueditor/ueditor.parse.js"></script>
+        </head>
+    <body>
         
-    @stop
-@section('script_src')
-    <script type="text/javascript" src="{{asset('/plugin/layer-v3.1.0/layer/layer.js')}}"></script>
-    <script type="text/javascript" src="{{asset('/plugin/handlebars-v3.0.3.min.js')}}"></script>   
-    <script type="text/javascript" src="{{asset('/plugin/ueditor/ueditor.config.js')}}"></script>
-    <script type="text/javascript" src="{{asset('/plugin/ueditor/ueditor.all.js')}}"></script>
-    <script type="text/javascript" src="{{asset('/plugin/ueditor/ueditor.parse.js')}}"></script>
-    @stop
-@section('common_content')
-    <div class='home_main_content' article_id="{{$id}}">
+        <div class='common_top'>
+            
+            <!-- 公共导航栏 -->
+	<div class='common_nav'>
+		<a href="/"><div class='home_img dib'></div></a>
+		<div class='common_nav_box dib'>
+			<a href="/" class='dib'><span class='dib common_nav_list'>首页</span><div class='small_nav hide'>home</div></a>
+			<a href="/Article/articleList/1" class='dib'><span class='dib common_nav_list'>编程语言</span><div class='small_nav hide'>language</div></a>
+			<a href="/Article/articleList/3" class='dib'><span class='dib common_nav_list'>web前端</span><div class='small_nav hide'>vision</div></a>
+			<a href="/Article/articleList/2" class='dib'><span class='dib common_nav_list'>数据处理</span><div class='small_nav hide'>data</div></a>
+			<a href="/Article/articleList/14" class='dib'><span class='dib common_nav_list'>其它学习</span><div class='small_nav hide'>other</div></a>
+			<a href="/Article/articleList/18" class='dib'><span class='dib common_nav_list'>随笔</span><div class='small_nav hide'>dream</div></a>
+			<a href="/Message" class='dib'><span class='dib common_nav_list'>留言</span><div class='small_nav hide'>message</div></a>
+		</div>
+	</div>        </div>
+        <div class='common_body'>
+            <div class='background'>
+            
+                <div class='home_main_content' article_id="12">
         <!-- 左边显示文章内容，右边显示评论和点赞等操作 -->
         <div class='article_left_box'>
             <div class='article_show_div'>
                 <div class='article_title'>
-                    {{$article->name}}
+                    写给thinkphp开发者的laravel系列教程(七)视图
                 </div>
                 <div class='author_time_tags'>
                     <!-- 作者 -->
                     <span class='author_span dib' title='作者'> 
-                        <span class='dib author_img'></span><span class='author_name'>{{$article->author}}</span>
+                        <span class='dib author_img'></span><span class='author_name'>半透明</span>
                     </span>
                     <!-- 时间 -->
                     <span class='time_span dib' title='发布时间'>
-                        <span class='dib time_img'></span><span class='article_time'>{{$article->publish_time}}</span>
+                        <span class='dib time_img'></span><span class='article_time'>2017-11-12 10:57:15</span>
                     </span>
                     <!-- 标签 -->
                     <span class='dib article_tag'>
                         <span class='dib article_tag_img'></span>
-                        @if (isset($article->tags)) 
-                            @foreach ($article->tags as $tag)
-                                <a href="/Article/articleList/{{$tag->id}}" class='tag_a'><div class='tag color_{{$tag->color}} 
-                                @if($tag->status == 0)ban @endif' data_id='{{$tag->id}}'>{{$tag->name}}</div></a>
-                            @endforeach                                                 
-                        @else                  
-                            <span class='no_tags'>暂无标签</span>
-                        @endif 
+                         
+                                                            <a href="/Article/articleList/1" class='tag_a'><div class='tag color_1 
+                                ' data_id='1'>编程语言</div></a>
+                                                            <a href="/Article/articleList/11" class='tag_a'><div class='tag color_3 
+                                ' data_id='11'>php</div></a>
+                                                            <a href="/Article/articleList/15" class='tag_a'><div class='tag color_2 
+                                ' data_id='15'>laravel</div></a>
+                                                            <a href="/Article/articleList/16" class='tag_a'><div class='tag color_1 
+                                ' data_id='16'>thinkphp</div></a>
+                                                                             
+                         
                     </span>
                 </div>
                 <div class='article_content'>
-                    {!! $article->content !!}
+                    <p>相对于 MC；<br/>laravel的视图V可能是最容易上手的；<br/>但是如果想用好；<br/>那也是我们 phper 最难掌握的部分；<br/>因为它涉及到了领域叫前端；<br/>laravel 和 node.js 有着非常紧密的结合；<br/>这也正是 laravel 强大的原因之一；<br/>它不仅仅是一个 php 框架；<br/>它更是一个全栈框架；<br/>不熟悉 node.js 的童鞋很难发挥出它巨大的威力；<br/>不过没关系；<br/>它的基础功能就够我们用了；<br/>先入门；<br/>高深的部分咱边用边学；</p><p>thinkphp 的视图模板文件就是以<code>.html</code>为后缀的；<br/>写 html 的童鞋会很熟悉；<br/>而 laravel 全框架则一个 html 文件都木有；<br/>laravel 的前端模板用的是 blade ；<br/>所有的模板文件都是以<code>.blade.php</code>为后缀；<br/>稍微吐槽下；<br/>作为一个喜欢精简的处女座；<br/>有目录作为限制；<br/>我是不喜欢这种啰嗦一长串的方式；<br/>这给我有种 thinkphp 控制器的 <code>.class.php</code> 后缀的既视感；<br/>不过这都不是问题；<br/>就当 <code>.blade.php</code> 是 <code>.html</code> 就行了；<br/>该怎么写 html 还怎么写；</p><p>先来说在 html 写 php 的控制结构；<br/>thinkphp 中把 php 的 foreach 、 if 等都定义成 html 标签的形式； <br/>我当年还写文章讲解怎么自定义标签来着；<br/><a href="https://baijunyao.com/article/21" target="_blank">thinkphp 自定义模板标签 (一)</a>； &nbsp; <br/>拿循环数据的 foreach 举个栗子；<br/>thinkphp 中有 foreach 和 volist ；<br/>写出来是下面这个样子的；</p><pre class="line-numbers language-html code-toolbar">&lt;p&gt;下面是&nbsp;foreach&nbsp;标签&lt;/p&gt;&lt;foreach&nbsp;name=&quot;list&quot;&nbsp;item=&quot;vo&quot;&nbsp;key=&quot;k&quot;&nbsp;&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;{$k}|{$vo}&lt;/foreach&gt;&lt;p&gt;下面是&nbsp;volist&nbsp;标签&lt;/p&gt;&lt;volist&nbsp;name=&quot;list&quot;&nbsp;id=&quot;vo&quot;&nbsp;offset=&quot;5&quot;&nbsp;length=&#39;10&#39;&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;{$vo.name}&lt;/volist&gt;</pre><pre class="line-numbers language-html code-toolbar">HTML</pre><p>吐槽完了 laravel 咱来吐槽下 thinkphp 呗；<br/>首先 thinkphp 这种标签的形式给大家增加了学习成本；<br/>循环个数据都有两个标签；<br/>这就算了标签中的属性名还都不一样；<br/>反正我是经常代码敲到要循环数据的时候；<br/>我得先想下我是要用 foreach 还是 volist 呢？<br/>然后再想下定义 value 的属性是 item 还是 id 呢？<br/>最后还要考虑下这个 offset 和 length 的用法；<br/>还有就是这些标签和 html 混搭不是很好分辨；<br/>laravel 在这方面做的就比较优雅了；<br/>只是加个@符号就行了；<br/>代码就是下面这个样子了；</p><pre class="line-numbers language-html code-toolbar">&lt;p&gt;下面是&nbsp;foreach&nbsp;标签&lt;/p&gt;@foreach($list&nbsp;as&nbsp;$k&nbsp;=&gt;&nbsp;$v)
+&nbsp;&nbsp;&nbsp;&nbsp;{{&nbsp;$v[&#39;name&#39;]&nbsp;}}
+@endforeach</pre><pre class="line-numbers language-html code-toolbar">HTML</pre><p>而控制循环的起止个数可以用<code>$loop</code>；<br/>通过上面代码；<br/>我们也可以很容易就发现了；<br/>thinkphp 在 html 中输出变量使用的是一个花括号<code>{}</code>；<br/>laravel 使用的是两个花括号<code>{{}}</code>;</p><p>接着来讲下模板继承；<br/>一般网站开发的时候都是有大面积的公共部分；<br/>比如说我的博客；<br/>顶部的导航菜单、右侧、底部都是通用的；<br/>只有左侧是变化的；<br/>模板继承功能就是处理这种场景的；<br/>thinkphp 使用的是 <code>block</code>;<br/>laravel 这次则反过来有两种情况；<br/>在父级模板中；<br/>只有简单纯文字的时候就用 <code>yield</code> 比如说网站 title ；<br/>如果是大段代码的话就用 <code>section</code>；<br/>点到为止；详细的看文档；</p><p>有了模板文件；<br/>就是要分配数据了；<br/>父级模板中的那些公共部分的数据大多也是通用的；<br/>还是比如说顶部的导航菜单、右侧、底部的数据也都是通用的；<br/>如何共用这部分数据呢？<br/>thinkphp 中我们是通过使用控制器继承的方式分配数据；<br/>laravel 可以使用 <code>View::composer</code> ;<br/>可以先看下官方文档 <a href="https://laravelacademy.org/post/6758.html" target="_blank">HTTP 层 —— 视图</a> &nbsp;;<br/>主要是通配符；<br/>比如说我们要给前端 home 模块分配分类 category 数据；<br/>在 /app/Providers/AppServiceProvider.php 文件的 boot 中;</p><pre class="line-numbers language-php code-toolbar">//&nbsp;分配前台通用的&nbsp;category&nbsp;数据view()-&gt;composer(&#39;home/*&#39;,&nbsp;function&nbsp;($view)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;获取配置项
+&nbsp;&nbsp;&nbsp;&nbsp;$category&nbsp;=&nbsp;Category::all();
+&nbsp;&nbsp;&nbsp;&nbsp;$assign&nbsp;=&nbsp;[
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;category&#39;&nbsp;=&gt;&nbsp;$category
+&nbsp;&nbsp;&nbsp;&nbsp;];
+&nbsp;&nbsp;&nbsp;&nbsp;$view-&gt;with($assign);});</pre><pre class="line-numbers language-php code-toolbar">PHP</pre><p>这里需要提醒下；<br/>第一个参数的 <code>home/*</code> ；<br/>指的是 <code>resources/views/home</code> 目录；<br/>此目录下的所有模板文件都将分配 <code>category</code> 数据；</p><p>控制器中分配数据和载入模板文件前面文章讲了点；<br/>thinkphp中的分配数据是使用 assign；<br/>以文章首页的方法为例；</p><pre class="line-numbers language-php code-toolbar">public&nbsp;function&nbsp;index(){
+&nbsp;&nbsp;&nbsp;&nbsp;$assign&nbsp;=&nbsp;[
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;title&#39;&nbsp;=&gt;&nbsp;&#39;白俊遥文章的标题&#39;,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;content&#39;&nbsp;=&gt;&nbsp;&#39;白俊遥文章的内容&#39;
+&nbsp;&nbsp;&nbsp;&nbsp;]
+&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;assign($assign);
+&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;display(&#39;Home/Index/index&#39;);}</pre><pre class="line-numbers language-php code-toolbar">PHP</pre><p>如果当前的方法要引入的html页面跟控制器目录结构一致；<br/>那 display 是可以不传参数的；<br/>Home 模块下的 IndexController 的 index 方法中；<br/>display 不传参数跟传<code>&#39;Home/Index/index&#39;</code>是一样的；</p><pre class="line-numbers language-php code-toolbar">$this-&gt;display()$this-&gt;display(&#39;Home/Index/index&#39;);</pre><pre class="line-numbers language-php code-toolbar">PHP</pre><p>到了 laravel 中就是这个样子的了；</p><pre class="line-numbers language-php code-toolbar">public&nbsp;function&nbsp;index(){
+&nbsp;&nbsp;&nbsp;&nbsp;$assign&nbsp;=&nbsp;[
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;title&#39;&nbsp;=&gt;&nbsp;&#39;白俊遥文章的标题&#39;,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;content&#39;&nbsp;=&gt;&nbsp;&#39;白俊遥文章的内容&#39;
+&nbsp;&nbsp;&nbsp;&nbsp;]
+&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;view(&#39;home.index.index&#39;,&nbsp;$assign);}</pre><pre class="line-numbers language-php code-toolbar">PHP</pre><p>laravel 用 view 函数可以实现分配和引入页面两个功能；<br/>第一个参数是要引入的页面相对于<code>resources/view</code>的路径；<br/>如果习惯 thinkphp 的用斜线分割的方式；<br/>laravel 也是支持的；下面这两种写法是相等的；</p><pre class="line-numbers language-php code-toolbar">return&nbsp;view(&#39;home.index.index&#39;,&nbsp;$assign);return&nbsp;view(&#39;home/index/index&#39;,&nbsp;$assign);</pre><pre class="line-numbers language-php code-toolbar">PHP</pre><p>这里推荐使用点 <code>.</code> 分割；<br/>因为 phpstorm 默认是可以识别laravel项目的.分割的；<br/>在控制器中按着 ctrl 点 <code>&#39;home.index.index&#39;</code> 是可以直接打开该文件的；<br/>相当之方便；<br/>如果完全复制之前文章的话；<br/>那不是显得太懒了；<br/>这里讲个小技巧；<br/>可以通过 <code>compact</code> 函数组合 <code>$assign</code> 数组；<br/>再举个栗子吧；</p><pre class="line-numbers language-php code-toolbar">public&nbsp;function&nbsp;index(){
+&nbsp;&nbsp;&nbsp;&nbsp;$article&nbsp;=&nbsp;Article::all();
+&nbsp;&nbsp;&nbsp;&nbsp;$category&nbsp;=&nbsp;Category::all();
+&nbsp;&nbsp;&nbsp;&nbsp;$tag&nbsp;=&nbsp;Tag::all();
+&nbsp;&nbsp;&nbsp;&nbsp;$assign&nbsp;=&nbsp;[
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;article&#39;&nbsp;=&gt;&nbsp;$article,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;category&#39;&nbsp;=&gt;&nbsp;$category,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#39;tag&#39;&nbsp;=&gt;&nbsp;$tag
+&nbsp;&nbsp;&nbsp;&nbsp;];
+&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;view(&#39;home.index.index&#39;,&nbsp;$assign);}</pre><pre class="line-numbers language-php code-toolbar">PHP</pre><p>上面代码等同于下面代码；</p><pre class="line-numbers language-php code-toolbar">public&nbsp;function&nbsp;index(){
+&nbsp;&nbsp;&nbsp;&nbsp;$article&nbsp;=&nbsp;Article::all();
+&nbsp;&nbsp;&nbsp;&nbsp;$category&nbsp;=&nbsp;Category::all();
+&nbsp;&nbsp;&nbsp;&nbsp;$tag&nbsp;=&nbsp;Tag::all();
+&nbsp;&nbsp;&nbsp;&nbsp;$assign&nbsp;=&nbsp;compact(&#39;article&#39;,&nbsp;&#39;category&#39;,&nbsp;&#39;tag&#39;);
+&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;view(&#39;home.index.index&#39;,&nbsp;$assign);}</pre><pre class="line-numbers language-php code-toolbar">PHP</pre><p>好了；<br/>去掉相同的代码；<br/>不用我说童鞋们应该也知道 <code>compact</code> 的作用了；<br/>实在不明白；<br/>查下php手册吧；</p><p><img src="/article_images/20171112/1510484195408398.jpg" title="1510484195408398.jpg" alt="3.jpg"/><br/></p><p>本文转载自<a href="http://baijunyao.com">白俊遥博客</a>https://baijunyao.com</p>
                 </div>
             </div>
         </div>
@@ -613,7 +770,9 @@
         <div class='article_right_box'>
             <div class='agree_login_div'>
                 <div class='agree_div'>
-                    <div class='agree_left_div'></div>
+                    <div class='agree_left_div'>
+                       
+                    </div>
                 </div>
                 <div class='user_info_div dib'>
                     
@@ -635,9 +794,79 @@
             <div class='page'></div>
         </div>
     </div>
-    @stop
-@section('script')
-    @verbatim
+                </div>
+        </div>
+        <div class='common_bottom'>
+            <div class='common_bottom_content'>
+	<a href="http://www.miitbeian.gov.cn" target="_blank">ICP：皖ICP备18001809号</a>
+</div>        </div>
+        <!-- 公共登录弹窗 -->
+        <div class='commen_login_div hide'>
+            <!-- 账号密码登录-暂时先用，等有了微信登陆之后，去掉这个功能，或者改为微信的账号密码登录 -->
+            <div class='login_by_input'>
+                <div class="login_user_name_div">
+                    <span >用户名：</span>
+                    <input type="text" class='user_name' />
+                </div>
+                <div class="login_user_password_div">
+                    <span>密&nbsp;&nbsp;&nbsp;码：</span>
+                    <input type="password" class='password' />
+                </div>
+                <div>
+                    <span class='common_login_btn'>登录</span>
+                </div>
+                <div class='no_account_regist_div'>
+                    <span>没有账号？<a href='/regist' target="_blank">注册</a></span>
+                </div>
+            </div>
+            <!-- 微信扫码登录 -->
+            <div class='login_by_wx hide'>
+                <!-- 放二维码的div -->
+                <div>
+                    
+                </div>
+            </div>
+
+            <div class='change_login_method'>
+                <span class='change_method_wx'>微信登录</span>
+                <span class='change_method_wb'>微博登录</span>
+            </div>
+        </div>
+
+        <!-- 公共个人信息展示窗 -->
+        <div class='user_info_box hide'>
+            
+        </div>
+    </body>
+    
+        <script  id="user_info_box_tmp" type="text/x-handlebars-template">
+            <div class='user_info_box_id' user_id="{{uid}}">
+                <!-- 头像 -->
+                <span class='user_head'
+                    {{#eq head 0}}
+                        style="background-image: url('http://www.btmblog.com/image/home/default_head.jpg');"
+                    {{else}}
+                        style="background-image: url('http://www.btmblog.com/image/home/headimg.jpg');"
+                    {{/eq}} 
+                ></span>
+                  
+                <div class='user_name_history_reply'>
+                    <!-- 昵称 -->
+                    <span class='user_nick_name' title="{{nick_name}}">{{nick_name}}</span> 
+                    <!-- 浏览历史 -->
+                    <a class='view_history_a' href='/User/viewHistory' target="_blank">阅读历史：12345</a>
+                    <!-- 查看回复 -->
+                    <a class='my_reply_a' href="/User/replyRecord" target="_blank">收到回复：123</a>
+                </div>
+                            
+            </div>
+            <div>
+                <a href="/User/profile" class='user_profile' target="_blank">个人中心</a>
+                <span class='login_out_btn'>注销</span>
+            </div>
+        </script>
+        
+        
     <script  id="article_info" type="text/x-handlebars-template">
          <!-- 作者 -->
         <span class='author_span dib' title='作者'> 
@@ -754,11 +983,11 @@
         {{/eq}}
     </script>
     
-    @endverbatim
+    
     <script type="text/javascript">
         $(function(){
             //解析文章内容
-            uParse('.article_content', {rootPath : "{{asset('/plugin/ueditor')}}"});
+            uParse('.article_content', {rootPath : "http://www.btmblog.com/plugin/ueditor"});
 
             var id = $('.home_main_content').attr('article_id');
 
@@ -1116,4 +1345,4 @@
             })          
         })
     </script>
-    @stop
+    </html>

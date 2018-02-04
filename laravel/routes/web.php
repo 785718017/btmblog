@@ -12,7 +12,7 @@
 */
 
 //后台
-Route::Group(['namespace' => 'Admin' , 'prefix' => 'Admin', 'middleware' => ['check_auth']],function(){
+Route::Group(['namespace' => 'Admin' , 'prefix' => 'Admin' , 'middleware' => ['check_auth']],function(){
     //后台首页
     Route::get('/' , 'AdminController@index');
 
@@ -164,6 +164,8 @@ Route::Group(['namespace' => 'Home','middleware' => ['check_auth']],function(){
         Route::post('registUser' , 'UserController@registUser')->middleware('CheckLogin');
         //登录
         Route::post('login' , 'UserController@login')->middleware('CheckLogin');
+        //获取用户信息
+        Route::post('getUserInfo' , 'UserController@getUserInfo');
     });
 
     //前台公共成功提示页面

@@ -4,7 +4,7 @@
 		.home_banner{ 
             width: 100%;
             height: 265px;
-            background: url("{{asset('/image/home/blog_banner.png')}}");
+            background: url("{{asset('/image/home/blog_banner.jpg')}}");
             background-size: 100% 100%;
         }
         .home_banner .head_img_out_div{
@@ -44,7 +44,7 @@
             margin:0px auto;
             min-height: 500px;
             padding-top: 20px;
-            padding-bottom: 100px;
+            padding-bottom: 40px;
             overflow: hidden;
         }
         .article_recommend{

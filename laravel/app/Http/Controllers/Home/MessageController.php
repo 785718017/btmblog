@@ -13,7 +13,7 @@ class MessageController extends Controller
      * 展示留言页面
      */
     public function index(){
-        return view('Home/Message/index' , ['page_title' => '留言']);
+        return view('home/Message/index' , ['page_title' => '留言']);
     }
 
     /**

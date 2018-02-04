@@ -52,7 +52,25 @@ class ArticleController extends Controller
             echo '获取文章数据出错,请刷新重试!';
         }else{
             DB::commit();
-            return view('Home/Article/index' , ['page_title' => '文章' , 'id' => $id]);
+            $url = public_path('static/home/Article/index/'.$id.'.html');
+            if(file_exists($url)){
+                // 读取文件内容
+                $res = fopen($url, 'r');
+                $html = fread($res, filesize($url));
+                return $html;
+            }else{
+                $article = $articleService->getArticleById($id);
+                $data = view('home/Article/index' , ['page_title' => '文章' , 'id' => $id, 'article' => $article])->render();
+                // 要不要把静态文件的二进制数据存在memcache中
+                $res = $this->createOrUpdateDirAndFile($url, $data);
+                if(!$res){
+                    // 将生成该页面的任务丢进消息队列
+
+                }
+                return $data;
+            }
+
+
         }
     }
 
@@ -61,9 +79,10 @@ class ArticleController extends Controller
      */
     public function getArticleDetail(Request $request, ArticleService $articleService){
         $id = $request->input('id');
-        $article = $articleService->getArticleById($id);
+        // 获取文章的点赞情况
+        $article = $articleService->getArticleAgreeNum($id);
         if(empty($article)){
-            return $this->error('获取数据失败');
+            return $this->error('获取点赞数量失败');
         }
         return $this->success($article);
     }
@@ -154,7 +173,7 @@ class ArticleController extends Controller
         if(empty($tag)){
             return  redirect('/failNotify/该分类信息不存在!/3');
         }
-        return view('Home/Article/articleList' , ['page_title' => $tag->name , 'tag' => $tag]);
+        return view('home/Article/articleList' , ['page_title' => $tag->name , 'tag' => $tag]);
     }
 
     /**

@@ -1,6 +1,105 @@
-@extends('home.Common.common')
-@section('style')
-    <style>    
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>文章-半透明的博客</title>
+        <meta charset="utf-8">
+        <link rel="icon" type="image/x-icon" href="http://www.btmblog.com/image/little_icon.png" />
+        <link rel="stylesheet" type="text/css" href="http://www.btmblog.com/css/Home/common.css" />
+        <style type="text/css">
+            *{               
+                margin: 0px;
+                padding: 0px;
+            }
+            body{
+                font-family: "Microsoft Yahei","Hiragino Sans GB","Helvetica Neue","WenQuanYi Micro Hei","\5B8B\4F53";
+            }
+
+            /*用户个人信息弹出框开始*/
+            .user_info_box_id{
+                overflow: hidden;
+            }
+            .user_info_box .user_head{
+                display: inline-block;
+                width: 70px;
+                height: 70px;
+                background-color: #f6ce5b;
+                font-weight: bold;
+                font-size: 14px;
+                color: #FFF;
+                border-radius: 35px;
+                border: solid #ccc 1px;
+                float: left;
+                margin-left: 15px;
+                margin-top: 15px;
+                background-size: 70px 70px;
+            }
+            .user_name_history_reply{
+                display: inline-block;
+                width: 142px;
+                height: 70px;
+                float: right;
+                margin-right: 15px;
+                margin-top: 15px;
+                overflow: hidden;
+            }
+            .user_nick_name{
+                display: inline-block;
+                width: 142px;
+                height: 30px;
+                line-height: 30px;
+                font-size: 14px;
+                overflow: hidden;
+                text-overflow:ellipsis;
+                white-space: nowrap;
+                color: #666666;
+                float: left;
+            }
+            .user_profile{
+                display: inline-block;
+                width: 100px;
+                text-align: center;
+                height: 30px;
+                line-height: 30px;
+                text-decoration: none;
+                margin-top: 20px;
+                margin-left: 15px;
+                background: #f5ce5f;
+                color: #FFF;
+                border-radius: 10px;
+                cursor: pointer;
+            }
+
+            .login_out_btn{
+                display: inline-block;
+                width: 100px;
+                text-align: center;
+                height: 30px;
+                line-height: 30px;
+                background: #ccc;
+                color: #FFF;
+                border-radius: 10px;
+                cursor: pointer;
+                margin-left: 10px;
+            }
+            .view_history_a,.my_reply_a{
+                display: inline-block;
+                width: 142px;
+                height: 20px;
+                line-height: 20px;
+                font-size: 10px;
+                overflow: hidden;
+                text-overflow:ellipsis;
+                white-space: nowrap;
+                color: #666666;
+                float: left;
+                text-decoration: none;
+            }
+            .home_main_content{
+                padding-bottom: 40px;
+            }
+            /*用户个人信息弹出框结束*/
+        </style>
+            <style>    
         .home_main_content{
             width: 1140px;
             margin:0px auto;
@@ -55,7 +154,7 @@
         .author_img{
             width: 21px;
             height: 21px;
-            background:url("{{asset('/image/home/icons.png')}}");
+            background:url("http://www.btmblog.com/image/home/icons.png");
             background-size:63px 63px;
             background-repeat: no-repeat;
             background-position: -21px 0px;
@@ -81,7 +180,7 @@
         .time_img{
             width: 21px;
             height: 21px;
-            background:url("{{asset('/image/home/icons.png')}}");
+            background:url("http://www.btmblog.com/image/home/icons.png");
             background-size:63px 63px;
             background-repeat: no-repeat;
             background-position: 0px 0px;
@@ -99,7 +198,7 @@
         .article_tag_img{
             width: 21px;
             height: 21px;
-            background:url("{{asset('/image/home/icons.png')}}");
+            background:url("http://www.btmblog.com/image/home/icons.png");
             background-size:63px 63px;
             background-repeat: no-repeat;
             background-position: -42px 0px;
@@ -146,7 +245,7 @@
         .agree_img{
             width: 28px;
             height: 28px;
-            background:url("{{asset('/image/home/icons.png')}}");
+            background:url("http://www.btmblog.com/image/home/icons.png");
             background-size:84px 84px;
             background-repeat: no-repeat;
             background-position: -28px -28px;
@@ -180,7 +279,7 @@
         .disagree_img{
             width: 28px;
             height: 28px;
-            background:url("{{asset('/image/home/icons.png')}}");
+            background:url("http://www.btmblog.com/image/home/icons.png");
             background-size:84px 84px;
             background-repeat: no-repeat;
             background-position: -56px -28px;
@@ -333,7 +432,7 @@
         .comment_agree_img{
             width: 16px;
             height: 16px;
-            background-image: url("{{asset('/image/home/icons.png')}}");
+            background-image: url("http://www.btmblog.com/image/home/icons.png");
             background-size: 48px 48px;
             background-position: -16px -16px;
             margin-left: 10px;
@@ -347,7 +446,7 @@
         .comment_disagree_img{
             width: 16px;
             height: 16px;
-            background-image: url("{{asset('/image/home/icons.png')}}");
+            background-image: url("http://www.btmblog.com/image/home/icons.png");
             background-size: 48px 48px;
             background-position: -32px -16px;
         }
@@ -563,49 +662,68 @@
         }
         /*没有评论时样式结束*/
 	</style>
-    @stop
-@section('style_src')
+                    
+            <script type="text/javascript" src="http://www.btmblog.com/js/jquery-1.8.3.min.js"></script>
+        <script type="text/javascript" src="http://www.btmblog.com/js/common.js"></script>
+        <script type="text/javascript" src="http://www.btmblog.com/js/md5.js"></script>
+        <script type="text/javascript" src="http://www.btmblog.com/plugin/layer-v3.1.0/layer/layer.js"></script>
+        <script type="text/javascript" src="http://www.btmblog.com/plugin/handlebars-v3.0.3.min.js"></script>
+            <script type="text/javascript" src="http://www.btmblog.com/plugin/layer-v3.1.0/layer/layer.js"></script>
+    <script type="text/javascript" src="http://www.btmblog.com/plugin/handlebars-v3.0.3.min.js"></script>   
+    <script type="text/javascript" src="http://www.btmblog.com/plugin/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="http://www.btmblog.com/plugin/ueditor/ueditor.all.js"></script>
+    <script type="text/javascript" src="http://www.btmblog.com/plugin/ueditor/ueditor.parse.js"></script>
+        </head>
+    <body>
         
-    @stop
-@section('script_src')
-    <script type="text/javascript" src="{{asset('/plugin/layer-v3.1.0/layer/layer.js')}}"></script>
-    <script type="text/javascript" src="{{asset('/plugin/handlebars-v3.0.3.min.js')}}"></script>   
-    <script type="text/javascript" src="{{asset('/plugin/ueditor/ueditor.config.js')}}"></script>
-    <script type="text/javascript" src="{{asset('/plugin/ueditor/ueditor.all.js')}}"></script>
-    <script type="text/javascript" src="{{asset('/plugin/ueditor/ueditor.parse.js')}}"></script>
-    @stop
-@section('common_content')
-    <div class='home_main_content' article_id="{{$id}}">
+        <div class='common_top'>
+            
+            <!-- 公共导航栏 -->
+	<div class='common_nav'>
+		<a href="/"><div class='home_img dib'></div></a>
+		<div class='common_nav_box dib'>
+			<a href="/" class='dib'><span class='dib common_nav_list'>首页</span><div class='small_nav hide'>home</div></a>
+			<a href="/Article/articleList/1" class='dib'><span class='dib common_nav_list'>编程语言</span><div class='small_nav hide'>language</div></a>
+			<a href="/Article/articleList/3" class='dib'><span class='dib common_nav_list'>web前端</span><div class='small_nav hide'>vision</div></a>
+			<a href="/Article/articleList/2" class='dib'><span class='dib common_nav_list'>数据处理</span><div class='small_nav hide'>data</div></a>
+			<a href="/Article/articleList/14" class='dib'><span class='dib common_nav_list'>其它学习</span><div class='small_nav hide'>other</div></a>
+			<a href="/Article/articleList/18" class='dib'><span class='dib common_nav_list'>随笔</span><div class='small_nav hide'>dream</div></a>
+			<a href="/Message" class='dib'><span class='dib common_nav_list'>留言</span><div class='small_nav hide'>message</div></a>
+		</div>
+	</div>        </div>
+        <div class='common_body'>
+            <div class='background'>
+            
+                <div class='home_main_content' article_id="7">
         <!-- 左边显示文章内容，右边显示评论和点赞等操作 -->
         <div class='article_left_box'>
             <div class='article_show_div'>
                 <div class='article_title'>
-                    {{$article->name}}
+                    写给thinkphp开发者的laravel系列教程(二)环境及安装
                 </div>
                 <div class='author_time_tags'>
                     <!-- 作者 -->
                     <span class='author_span dib' title='作者'> 
-                        <span class='dib author_img'></span><span class='author_name'>{{$article->author}}</span>
+                        <span class='dib author_img'></span><span class='author_name'>半透明</span>
                     </span>
                     <!-- 时间 -->
                     <span class='time_span dib' title='发布时间'>
-                        <span class='dib time_img'></span><span class='article_time'>{{$article->publish_time}}</span>
+                        <span class='dib time_img'></span><span class='article_time'>2017-11-01 06:32:28</span>
                     </span>
                     <!-- 标签 -->
                     <span class='dib article_tag'>
                         <span class='dib article_tag_img'></span>
-                        @if (isset($article->tags)) 
-                            @foreach ($article->tags as $tag)
-                                <a href="/Article/articleList/{{$tag->id}}" class='tag_a'><div class='tag color_{{$tag->color}} 
-                                @if($tag->status == 0)ban @endif' data_id='{{$tag->id}}'>{{$tag->name}}</div></a>
-                            @endforeach                                                 
-                        @else                  
-                            <span class='no_tags'>暂无标签</span>
-                        @endif 
+                         
+                                                            <a href="/Article/articleList/15" class='tag_a'><div class='tag color_2 
+                                ' data_id='15'>laravel</div></a>
+                                                            <a href="/Article/articleList/16" class='tag_a'><div class='tag color_1 
+                                ' data_id='16'>thinkphp</div></a>
+                                                                             
+                         
                     </span>
                 </div>
                 <div class='article_content'>
-                    {!! $article->content !!}
+                    <p>thinkphp 下载安装是相当之简单的；<br/>直接从官网下载安装包；<br/>解压扔到 php 环境中就跑起来了；<br/>如果你还是抱着这样的心态来搞laravel；<br/>那么它会让你知道什么是残忍；</p><p>首先laravel推荐的开发环境是Homestead;<br/>Homestead是vagrant的一个盒子；<br/>vagrant又是个什么鬼？<br/>哦骚瑞；这个具体我暂时不打算讲；<br/>给喜欢折腾的留作课后作业自己先研究吧；<br/>简单的粗糙的用5毛的解释就是这个样子；<br/>Homestead相当于wamp、xampp这类集成环境；<br/>就当它是虚拟机；<br/>把laravel所需要的php环境打包了；<br/>装好了Homestead就等于有了：<br/>Git、PHP 7.0、Nginx、MySQL；<br/>Composer、Node、Redis、Memcached；</p><p>如果天赋比较高的童鞋；<br/>按照文档轻松搞定了；<br/>那就用Homestead好了；<br/>不过如果是使用机械硬盘；<br/>我先提个醒；NFS是个坑；</p><p>如果被Homestead的配置安装打败的童鞋；<br/>别气馁；<br/>咱的目的是学习laravel；<br/>咱先用着集成环境没关系；<br/>等正式入门了；以后换环境来得及；<br/>别把生命浪费在不美好的Homestead上了；<br/>集成环境我这里推荐phpstudy；</p><p>mac的话试试Valet吧；<br/>真的是超级好用；<br/>按照教程装不难；<br/><a href="http://d.laravel-china.org/docs/5.3/valet" target="_blank">Laravel Valet</a></p><p>环境搞定后；咱来说laravel的下载；<br/>这里先解决一些童鞋可能有的疑惑；<br/>laravel的版本更新的那么快；<br/>从5.1到现在的5.4了；<br/>马上就要出5.5了；<br/>我应该下载那个学习呢？<br/>新出的版本的文档资料丰富么？<br/>作为一个过来人；<br/>可以大胆的说；学习最新版本没问题；<br/>除了一些版本特别提示的改动；<br/>laravel5.*的文档资料都是通用的；<br/>意思就是拿着laravel5.1的文档学5.4都是可以的；<br/>而且；版本间是可以升级的；<br/>比如说；<br/>我写一个项目的时候是用的5.3;<br/>现在出了5.4；<br/>官方的文档是会指导如何把自己的项目从5.3升级到5.4的；<br/>laravel已经想对稳定了；<br/>不用担心像thinkphp那样；从tp3.<em>直接跳到5.</em>；<br/>然后宣布不再维护3.*；<br/>留下我等一众开发者 黑人问号.jpg;</p><p>好；吃完定心丸；开始下载；<br/>laravel的下载需要使用composer；<br/>还不了解composer的出门左转去我下面这个链接的位置；<br/><a href="http://baijunyao.com/article/113" target="_blank">composer 的初级使用</a><br/>这篇文章我画重点的有安装项目的命令；</p><pre class="brush:html;toolbar:false">composer&nbsp;create-project&nbsp;作者名/项目名</pre><p>安装laravel的话就是：</p><pre class="brush:bash;toolbar:false">composer&nbsp;create-project&nbsp;--prefer-dist&nbsp;laravel/laravel</pre><p><code>--prefer-dist</code>的意思是直接下载而不是clone；<br/>这样会比较快；<br/>成功后就会有一个laravel的目录；<br/>这个就是下载好的laravel框架了；</p><p>下载完了；<br/>咱要让整个项目可以访问到；<br/>thinkphp的话；<br/>扔到环境下；直接访问index.php就可以了；<br/>laravel则不同；<br/>你会发现laravel的根目录下没有index.php;<br/>index.php 在 根目录的public目录下；<br/>laravel需要指向到public目录下；<br/>比如；分别下载了thinkphp和laravel项目；<br/>thinkphp：<code>E:\document\thinkphp</code> ；<br/>laravel：<code>E:\document\laravel</code> ；<br/>那么指向的目录必须是：<br/>thinkphp：<code>E:\document\thinkphp</code> ；<br/>laravel：<code>E:\document\laravel\public</code> ；</p><p>不知道怎么指向目录童鞋；<br/>参考<a href="http://baijunyao.com/article/114" target="_blank">phpstudy 配置虚拟主机</a><br/>网上有一些教程教大家如何像thinkphp那样；<br/>在laravel跟目录创建idnex.php；<br/>直接访问项目的根目录；<br/>或者直接访问根目录的server.php<br/>而不指向到public目录；<br/>我是非常不推荐这种做法的；<br/>laravel的public目录策略；<br/>可以非常好的保护源代码不被访问；<br/>是更安全更合理的方式；</p><p>都搞定后；<br/>访问自己定义的虚拟域名；<br/>如果出现了下面的页面；<br/>那么本文章的使命就完成了；</p><p><img src="/article_images/20171101/1509517888703001.jpg" title="1509517888703001.jpg" alt="l2.jpg"/></p><p>本文转载自<a href="http://baijunyao.com">白俊遥博客</a>https://baijunyao.com<br/></p>
                 </div>
             </div>
         </div>
@@ -613,7 +731,9 @@
         <div class='article_right_box'>
             <div class='agree_login_div'>
                 <div class='agree_div'>
-                    <div class='agree_left_div'></div>
+                    <div class='agree_left_div'>
+                       
+                    </div>
                 </div>
                 <div class='user_info_div dib'>
                     
@@ -635,9 +755,79 @@
             <div class='page'></div>
         </div>
     </div>
-    @stop
-@section('script')
-    @verbatim
+                </div>
+        </div>
+        <div class='common_bottom'>
+            <div class='common_bottom_content'>
+	<a href="http://www.miitbeian.gov.cn" target="_blank">ICP：皖ICP备18001809号</a>
+</div>        </div>
+        <!-- 公共登录弹窗 -->
+        <div class='commen_login_div hide'>
+            <!-- 账号密码登录-暂时先用，等有了微信登陆之后，去掉这个功能，或者改为微信的账号密码登录 -->
+            <div class='login_by_input'>
+                <div class="login_user_name_div">
+                    <span >用户名：</span>
+                    <input type="text" class='user_name' />
+                </div>
+                <div class="login_user_password_div">
+                    <span>密&nbsp;&nbsp;&nbsp;码：</span>
+                    <input type="password" class='password' />
+                </div>
+                <div>
+                    <span class='common_login_btn'>登录</span>
+                </div>
+                <div class='no_account_regist_div'>
+                    <span>没有账号？<a href='/regist' target="_blank">注册</a></span>
+                </div>
+            </div>
+            <!-- 微信扫码登录 -->
+            <div class='login_by_wx hide'>
+                <!-- 放二维码的div -->
+                <div>
+                    
+                </div>
+            </div>
+
+            <div class='change_login_method'>
+                <span class='change_method_wx'>微信登录</span>
+                <span class='change_method_wb'>微博登录</span>
+            </div>
+        </div>
+
+        <!-- 公共个人信息展示窗 -->
+        <div class='user_info_box hide'>
+            
+        </div>
+    </body>
+    
+        <script  id="user_info_box_tmp" type="text/x-handlebars-template">
+            <div class='user_info_box_id' user_id="{{uid}}">
+                <!-- 头像 -->
+                <span class='user_head'
+                    {{#eq head 0}}
+                        style="background-image: url('http://www.btmblog.com/image/home/default_head.jpg');"
+                    {{else}}
+                        style="background-image: url('http://www.btmblog.com/image/home/headimg.jpg');"
+                    {{/eq}} 
+                ></span>
+                  
+                <div class='user_name_history_reply'>
+                    <!-- 昵称 -->
+                    <span class='user_nick_name' title="{{nick_name}}">{{nick_name}}</span> 
+                    <!-- 浏览历史 -->
+                    <a class='view_history_a' href='/User/viewHistory' target="_blank">阅读历史：12345</a>
+                    <!-- 查看回复 -->
+                    <a class='my_reply_a' href="/User/replyRecord" target="_blank">收到回复：123</a>
+                </div>
+                            
+            </div>
+            <div>
+                <a href="/User/profile" class='user_profile' target="_blank">个人中心</a>
+                <span class='login_out_btn'>注销</span>
+            </div>
+        </script>
+        
+        
     <script  id="article_info" type="text/x-handlebars-template">
          <!-- 作者 -->
         <span class='author_span dib' title='作者'> 
@@ -754,11 +944,11 @@
         {{/eq}}
     </script>
     
-    @endverbatim
+    
     <script type="text/javascript">
         $(function(){
             //解析文章内容
-            uParse('.article_content', {rootPath : "{{asset('/plugin/ueditor')}}"});
+            uParse('.article_content', {rootPath : "http://www.btmblog.com/plugin/ueditor"});
 
             var id = $('.home_main_content').attr('article_id');
 
@@ -1116,4 +1306,4 @@
             })          
         })
     </script>
-    @stop
+    </html>

@@ -464,4 +464,28 @@ class ArticleService extends CommonService
 
         return $articles;
     }
+
+    /**
+     * 获取文章的点赞和点踩数量
+     * @param $id文章id
+     */
+    public function getArticleAgreeNum($id){
+        $ArticleModel = new ArticleModel();
+        $article = $ArticleModel->getArticleAgreeNum($id);
+
+        //获取用户对该文章的点赞点踩情况
+        $uid = session('uid');
+        $ArticleAgreeModel = new ArticleAgreeModel();
+        if(empty($uid)){
+            $article->agree_type = 0; //用户未登录时
+        }else{
+            $info = $ArticleAgreeModel->getArticleAgreeByAidAndUid($article->id, $uid);
+            if(empty($info)){
+                $article->agree_type = 0; //用户没有点赞或者点踩记录时
+            }else{
+                $article->agree_type = $info->agree_type;
+            }
+        }
+        return $article;
+    }
 }
